@@ -22,6 +22,7 @@ import { ReactReshape as Reshape } from "./popups/reshape/Reshape";
 import { Variance } from "./popups/variance/Variance";
 import app from "./reducers/dtale";
 import { createStore } from "./reducers/store";
+import "./i18n";
 
 require("./publicPath");
 
@@ -109,9 +110,9 @@ if (_.startsWith(pathname, "/dtale/popup")) {
   const store = createStore(app.store);
   store.dispatch(actions.init());
   ReactDOM.render(
-    <Provider store={store}>
-      <DataViewer />
-    </Provider>,
-    document.getElementById("content")
+      <Provider store={store}>
+        <DataViewer />
+      </Provider>,
+      document.getElementById("content")
   );
 }

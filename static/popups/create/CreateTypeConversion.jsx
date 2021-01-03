@@ -5,6 +5,7 @@ import Select, { createFilter } from "react-select";
 
 import { exports as gu } from "../../dtale/gridUtils";
 import buildCode from "./typeConversionCodeUtils";
+import { Trans, withTranslation } from "react-i18next";
 
 const TYPE_MAP = {
   string: ["date", "int", "float", "bool", "category"],
@@ -94,6 +95,7 @@ class CreateTypeConversion extends React.Component {
   }
 
   renderConversions() {
+    const {t} = this.props;
     if (this.state.col) {
       const [conversions, dtype] = getConversions(this.state.col, this.props.columns);
       let input = null;
@@ -110,7 +112,7 @@ class CreateTypeConversion extends React.Component {
               }
               return (
                 <button key={conversion} {...buttonProps}>
-                  {_.capitalize(conversion)}
+                  {t(_.capitalize(conversion))}
                 </button>
               );
             })}
@@ -119,14 +121,16 @@ class CreateTypeConversion extends React.Component {
       } else {
         input = (
           <span>
-            No conversion mappings available for dtype:
+            <Trans t={t}>No conversion mappings available for dtype:</Trans>
             <b className="pl-3">{dtype}</b>
           </span>
         );
       }
       return (
         <div className="form-group row">
-          <label className="col-md-3 col-form-label text-right">Convert To</label>
+          <label className="col-md-3 col-form-label text-right">
+            <Trans t={t}>Convert To</Trans>
+          </label>
           <div className="col-md-8">{input}</div>
         </div>
       );
@@ -140,10 +144,13 @@ class CreateTypeConversion extends React.Component {
     }
     const colType = getColType(this.state.col, this.props.columns);
     const { conversion } = this.state;
+    const { t } = this.props;
     if ((colType === "string" && conversion === "date") || (colType === "date" && conversion == "date")) {
       return (
         <div className="form-group row">
-          <label className="col-md-3 col-form-label text-right">Date Format</label>
+          <label className="col-md-3 col-form-label text-right">
+            <Trans t={t}>Date Format</Trans>
+          </label>
           <div className="col-md-8">
             <input
               type="text"
@@ -159,7 +166,9 @@ class CreateTypeConversion extends React.Component {
       const units = colType === "int" ? ["YYYYMMDD", "D", "s", "ms", "us", "ns"] : ["YYYYMMDD", "ms"];
       return (
         <div className="form-group row">
-          <label className="col-md-3 col-form-label text-right">Unit/Format</label>
+          <label className="col-md-3 col-form-label text-right">
+            <Trans t={t}>Unit/Format</Trans>
+          </label>
           <div className="col-md-8">
             <div className="input-group">
               <Select
@@ -188,7 +197,9 @@ class CreateTypeConversion extends React.Component {
       <React.Fragment>
         {!prePopulatedCol && (
           <div className="form-group row">
-            <label className="col-md-3 col-form-label text-right">Column To Convert</label>
+            <label className="col-md-3 col-form-label text-right">
+              <Trans t={this.props.t}>Column To Convert</Trans>
+            </label>
             <div className="col-md-8">
               <div className="input-group">
                 <Select
@@ -237,4 +248,5 @@ CreateTypeConversion.propTypes = {
   prePopulated: PropTypes.object,
 };
 
-export { CreateTypeConversion, validateTypeConversionCfg, buildCode };
+CreateTypeConversion = withTranslation("column_menu")(CreateTypeConversion);
+export { CreateTypeConversion, validateTypeConversionCfg, buildCode }

@@ -166,7 +166,7 @@ class CorrelationsTsOptions extends React.Component {
           </div>
         </div>
         <div className="col-auto pl-0 pr-0 text-right" style={{ marginTop: ".3em" }}>
-          {renderCodePopupAnchor(this.props.tsCode, "Correlations Timeseries")}
+          {renderCodePopupAnchor(this.props.tsCode, "Correlations Timeseries", this.props.t)}
         </div>
       </div>
     );

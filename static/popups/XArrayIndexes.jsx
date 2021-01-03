@@ -7,6 +7,7 @@ import Select, { createFilter } from "react-select";
 import { RemovableError } from "../RemovableError";
 import actions from "../actions/dtale";
 import { fetchJson } from "../fetcher";
+import { Trans, withTranslation } from "react-i18next";
 
 class ReactXArrayIndexes extends React.Component {
   constructor(props) {
@@ -43,11 +44,14 @@ class ReactXArrayIndexes extends React.Component {
       _.map(this.props.chartData.columns, c => ({ value: c.name })),
       ({ value }) => _.toLower(value)
     );
+    const {t} = this.props;
     return [
       <div key="body" className="modal-body">
         {this.state.error}
         <div className="form-group row">
-          <label className="col-md-3 col-form-label text-right">Index</label>
+          <label className="col-md-3 col-form-label text-right">
+            <Trans t={t}>Index</Trans>
+          </label>
           <div className="col-md-8">
             <div className="input-group">
               <Select
@@ -71,7 +75,9 @@ class ReactXArrayIndexes extends React.Component {
       </div>,
       <div key="footer" className="modal-footer">
         <button className="btn btn-primary" disabled={_.size(this.state.index) === 0} onClick={this.convert}>
-          <span>Convert to XArray</span>
+          <span>
+            <Trans t={t}>Convert To XArray</Trans>
+          </span>
         </button>
       </div>,
     ];
@@ -95,4 +101,5 @@ const ReduxXArrayIndexes = connect(
   })
 )(ReactXArrayIndexes);
 
-export { ReactXArrayIndexes, ReduxXArrayIndexes as XArrayIndexes };
+export default withTranslation("menu")(ReactXArrayIndexes);
+export const XArrayIndexes = withTranslation("menu")(ReduxXArrayIndexes);

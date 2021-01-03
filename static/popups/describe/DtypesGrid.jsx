@@ -6,6 +6,7 @@ import Column from "react-virtualized/dist/commonjs/Table/Column";
 import Table from "react-virtualized/dist/commonjs/Table/Table";
 
 import { exports as gu } from "../../dtale/gridUtils";
+import { withTranslation } from "react-i18next";
 
 require("./DtypesGrid.css");
 
@@ -143,6 +144,7 @@ class DtypesGrid extends React.Component {
       return this.state.error;
     }
     const { sortBy, sortDirection } = this.state;
+    const { t } = this.props;
     const toggleVisibility = ({ name, visible }) => e => {
       this.setState({
         dtypes: _.map(this.state.dtypes, d => {
@@ -190,7 +192,7 @@ class DtypesGrid extends React.Component {
             />
             <Column
               dataKey="visible"
-              label="Visible"
+              label={t("Visible")}
               headerRenderer={this._headerRenderer}
               width={60}
               style={{ textAlign: "left", paddingLeft: ".5em" }}
@@ -203,7 +205,7 @@ class DtypesGrid extends React.Component {
             />
             <Column
               dataKey="name"
-              label="Column Name"
+              label={t("Column Name")}
               headerRenderer={this._headerRenderer}
               width={200}
               flexGrow={1}
@@ -213,7 +215,7 @@ class DtypesGrid extends React.Component {
             <Column
               width={100}
               dataKey="dtype"
-              label="Data Type"
+              label={t("Data Type")}
               headerRenderer={this._headerRenderer}
               style={{
                 textAlign: "right",
@@ -235,4 +237,5 @@ DtypesGrid.propTypes = {
   propagateState: PropTypes.func,
 };
 
+DtypesGrid = withTranslation("describe")(DtypesGrid);
 export { DtypesGrid };

@@ -1,6 +1,7 @@
 import _ from "lodash";
 import PropTypes from "prop-types";
 import React from "react";
+import { Trans, withTranslation } from "react-i18next";
 
 const SAVE_TYPES = [
   ["inplace", "Inplace"],
@@ -28,9 +29,12 @@ class ColumnSaveType extends React.Component {
   }
 
   render() {
+    const {t} = this.props;
     return (
       <div className="form-group row">
-        <label className="col-md-3 col-form-label text-right">Save As</label>
+        <label className="col-md-3 col-form-label text-right">
+          <Trans t={t}>Save As</Trans>
+        </label>
         <div className="col-md-8">
           <div className="row">
             <div className="col-auto btn-group" style={{ height: "fit-content" }}>
@@ -44,7 +48,7 @@ class ColumnSaveType extends React.Component {
                 }
                 return (
                   <button key={i} {...buttonProps}>
-                    {label}
+                    {t(label)}
                   </button>
                 );
               })}
@@ -72,4 +76,4 @@ ColumnSaveType.propTypes = {
   name: PropTypes.string,
 };
 
-export default ColumnSaveType;
+export default withTranslation("column_menu")(ColumnSaveType);

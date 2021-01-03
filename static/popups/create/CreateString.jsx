@@ -3,6 +3,7 @@ import PropTypes from "prop-types";
 import React from "react";
 
 import ColumnSelect from "./ColumnSelect";
+import { withTranslation, Trans } from "react-i18next";
 
 function validateStringCfg({ cols }) {
   if (!cols || _.size(cols) < 2) {
@@ -53,7 +54,9 @@ class CreateString extends React.Component {
           isMulti
         />
         <div key={3} className="form-group row">
-          <label className="col-md-3 col-form-label text-right">Join Character</label>
+          <label className="col-md-3 col-form-label text-right">
+            <Trans t={this.props.t}>Join Character</Trans>
+          </label>
           <div className="col-md-8">
             <input
               type="text"
@@ -74,4 +77,5 @@ CreateString.propTypes = {
   namePopulated: PropTypes.bool,
 };
 
+CreateString = withTranslation("column_menu")(CreateString)
 export { CreateString, validateStringCfg, buildCode };

@@ -13,6 +13,7 @@ import { ColumnNames, validateColumnNamesCfg } from "./ColumnNames";
 import { Columns, validateColumnsCfg } from "./Columns";
 import { Rows, validateRowsCfg } from "./Rows";
 import { ShowDuplicates, validateShowDuplicatesCfg } from "./ShowDuplicates";
+import { Trans, withTranslation } from "react-i18next";
 
 require("./Duplicates.css");
 
@@ -139,10 +140,13 @@ class ReactDuplicates extends React.Component {
         body = <ShowDuplicates columns={this.state.columns} {...bodyProps} />;
         break;
     }
+    const {t} = this.props;
     return (
       <React.Fragment>
         <div className="form-group row">
-          <label className="col-md-3 col-form-label text-right">Operation</label>
+          <label className="col-md-3 col-form-label text-right">
+            <Trans t={t}>Operation</Trans>
+          </label>
           <div className="col-md-8">
             <div className="btn-group duplicate-types">
               {_.map(TYPES, ([type, label], i) => {
@@ -155,12 +159,14 @@ class ReactDuplicates extends React.Component {
                 }
                 return (
                   <button key={i} {...buttonProps}>
-                    {label}
+                    <Trans t={t}>{label}</Trans>
                   </button>
                 );
               })}
             </div>
-            {this.state.type && <small className="d-block pt-3">{TYPE_DESC[this.state.type]}</small>}
+            {this.state.type && <small className="d-block pt-3">
+              <Trans t={t}>{TYPE_DESC[this.state.type]}</Trans>
+            </small>}
           </div>
         </div>
         {body}
@@ -177,6 +183,7 @@ class ReactDuplicates extends React.Component {
         </div>
       );
     }
+    const {t} = this.props;
     return (
       <React.Fragment>
         <div className="modal-body">
@@ -186,7 +193,9 @@ class ReactDuplicates extends React.Component {
         <div className="modal-footer">
           <button className="btn btn-primary" onClick={this.state.executing ? _.noop : this.execute}>
             <BouncerWrapper showBouncer={this.state.executing}>
-              <span>Execute</span>
+              <span>
+                <Trans t={t}>Execute</Trans>
+              </span>
             </BouncerWrapper>
           </button>
         </div>
@@ -208,4 +217,7 @@ const ReduxDuplicates = connect(
   ({ dataId, chartData }) => ({ dataId, chartData }),
   dispatch => ({ onClose: chartData => dispatch(closeChart(chartData || {})) })
 )(ReactDuplicates);
-export { ReactDuplicates, ReduxDuplicates as Duplicates };
+
+const Duplicates = withTranslation("duplicate")(ReduxDuplicates);
+ReactDuplicates = withTranslation("duplicate")(ReactDuplicates);
+export { ReactDuplicates, Duplicates };

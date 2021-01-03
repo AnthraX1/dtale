@@ -9,6 +9,7 @@ import serverState from "../../dtale/serverStateManagement";
 import { fetchJson } from "../../fetcher";
 import { Details } from "./Details";
 import { DtypesGrid } from "./DtypesGrid";
+import { Trans, withTranslation } from "react-i18next";
 
 class Describe extends React.Component {
   constructor(props) {
@@ -63,6 +64,7 @@ class Describe extends React.Component {
       serverState.updateVisibility(this.props.dataId, visibility, callback);
     };
     const propagateState = state => this.setState(state);
+    const {t} = this.props;
     return [
       <div key="body" className="modal-body describe-body">
         <div className="row">
@@ -78,7 +80,9 @@ class Describe extends React.Component {
       </div>,
       <div key="footer" className="modal-footer">
         <button className="btn btn-primary" onClick={save}>
-          <span>Update Grid</span>
+          <span>
+            <Trans t={t}>Update Grid</Trans>
+          </span>
         </button>
       </div>,
     ];
@@ -93,4 +97,5 @@ Describe.propTypes = {
   }),
 };
 
+Describe = withTranslation("describe")(Describe);
 export { Describe };

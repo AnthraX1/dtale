@@ -2,6 +2,7 @@ import _ from "lodash";
 import PropTypes from "prop-types";
 import React from "react";
 import Select, { createFilter } from "react-select";
+import { Trans, withTranslation } from "react-i18next";
 
 function validateTransposeCfg(cfg) {
   const { index } = cfg;
@@ -69,15 +70,20 @@ class Transpose extends React.Component {
   }
 
   render() {
+    const {t} = this.props;
     return [
       <div key={0} className="form-group row">
-        <label className="col-md-3 col-form-label text-right">Index</label>
+        <label className="col-md-3 col-form-label text-right">
+          <Trans t={t}>Index</Trans>
+        </label>
         <div className="col-md-8">
           <div className="input-group">{this.renderSelect("index", ["columns"], true)}</div>
         </div>
       </div>,
       <div key={1} className="form-group row">
-        <label className="col-md-3 col-form-label text-right">Column(s)</label>
+        <label className="col-md-3 col-form-label text-right">
+          <Trans t={t}>Column(s)</Trans>
+        </label>
         <div className="col-md-8">
           <div className="input-group">{this.renderSelect("columns", ["index"], true)}</div>
         </div>
@@ -91,4 +97,5 @@ Transpose.propTypes = {
   columns: PropTypes.array,
 };
 
+Transpose = withTranslation("reshape")(Transpose);
 export { Transpose, validateTransposeCfg, buildCode };

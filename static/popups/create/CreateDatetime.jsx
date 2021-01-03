@@ -4,6 +4,7 @@ import React from "react";
 import Select, { createFilter } from "react-select";
 
 import { exports as gu } from "../../dtale/gridUtils";
+import { withTranslation, Trans } from "react-i18next";
 
 function validateDatetimeCfg(cfg) {
   const { col } = cfg;
@@ -69,9 +70,12 @@ class CreateDatetime extends React.Component {
       options = ["month_start", "month_end", "quarter_start", "quarter_end", "year_start", "year_end"];
       className = " datetime-conversions";
     }
+    const {t} = this.props;
     return (
       <div key={2} className="form-group row">
-        <label className="col-md-3 col-form-label text-right">{label}</label>
+        <label className="col-md-3 col-form-label text-right">
+          <Trans t={t}>{label}</Trans>
+        </label>
         <div className="col-md-8">
           <div className="btn-group">
             {_.map(options, option => {
@@ -84,7 +88,7 @@ class CreateDatetime extends React.Component {
               }
               return (
                 <button key={option} {...buttonProps}>
-                  {_.join(_.map(_.split(option, "_"), _.capitalize), " ")}
+                  <Trans t={t}>{_.join(_.map(_.split(option, "_"), _.capitalize), " ")}</Trans>
                 </button>
               );
             })}
@@ -99,9 +103,12 @@ class CreateDatetime extends React.Component {
       _.filter(this.props.columns || [], c => gu.findColType(c.dtype) == "date"),
       ({ name }) => ({ value: name })
     );
+    const {t} = this.props;
     return [
       <div key={0} className="form-group row">
-        <label className="col-md-3 col-form-label text-right">Column</label>
+        <label className="col-md-3 col-form-label text-right">
+          <Trans t={t}>Column</Trans>
+        </label>
         <div className="col-md-8">
           <div className="input-group">
             <Select
@@ -120,7 +127,9 @@ class CreateDatetime extends React.Component {
         </div>
       </div>,
       <div key={1} className="form-group row">
-        <label className="col-md-3 col-form-label text-right">Operation</label>
+        <label className="col-md-3 col-form-label text-right">
+          <Trans t={t}>Operation</Trans>
+        </label>
         <div className="col-md-8">
           <div className="btn-group">
             {_.map(["property", "conversion"], operation => {
@@ -133,7 +142,7 @@ class CreateDatetime extends React.Component {
               }
               return (
                 <button key={operation} {...buttonProps}>
-                  {_.capitalize(operation)}
+                  <Trans t={t}>{_.capitalize(operation)}</Trans>
                 </button>
               );
             })}
@@ -150,4 +159,5 @@ CreateDatetime.propTypes = {
   columns: PropTypes.array,
 };
 
+CreateDatetime = withTranslation("column_menu")(CreateDatetime);
 export { CreateDatetime, validateDatetimeCfg, buildCode };

@@ -4,18 +4,16 @@ import React from "react";
 import { connect } from "react-redux";
 
 import { openChart } from "../../actions/charts";
-import Descriptions from "../menu-descriptions.json";
+import { Trans, withTranslation } from "react-i18next";
 
-const DESCRIPTION = "View individual xarray dimensions. You are currently viewing:";
-
-function renderDimensionSelection(dimensionSelection) {
+function renderDimensionSelection(dimensionSelection, t) {
   if (_.size(dimensionSelection)) {
     return _.join(
       _.map(dimensionSelection, (val, prop) => `${val} (${prop})`),
       ", "
     );
   }
-  return "ALL DATA";
+  return t("menu_description:ALL DATA");
 }
 
 class ReactXArrayOption extends React.Component {
@@ -24,6 +22,7 @@ class ReactXArrayOption extends React.Component {
   }
 
   render() {
+    const {t} = this.props;
     const openXArrayPopup = type => this.props.openChart(_.assignIn({ type }, this.props));
     if (this.props.xarray) {
       return (
@@ -31,11 +30,13 @@ class ReactXArrayOption extends React.Component {
           <span className="toggler-action">
             <button className="btn btn-plain" onClick={() => openXArrayPopup("xarray-dimensions")}>
               <i className="ico-key" />
-              <span className="font-weight-bold">XArray Dimensions</span>
+              <span className="font-weight-bold">
+                <Trans t={t}>XArray Dimensions</Trans>
+              </span>
             </button>
           </span>
           <div className="hoverable__content menu-description">
-            {`${DESCRIPTION} ${renderDimensionSelection(this.props.xarrayDim)}`}
+            {`${t('menu_description:xarray_dim_des')} ${renderDimensionSelection(this.props.xarrayDim, this.props.t)}`}
           </div>
         </li>
       );
@@ -45,10 +46,14 @@ class ReactXArrayOption extends React.Component {
         <span className="toggler-action">
           <button className="btn btn-plain" onClick={() => openXArrayPopup("xarray-indexes")}>
             <i className="ico-tune" />
-            <span className="font-weight-bold">Convert To XArray</span>
+            <span className="font-weight-bold">
+              <Trans t={t}>Convert To XArray</Trans>
+            </span>
           </button>
         </span>
-        <div className="hoverable__content menu-description">{Descriptions.xarray_conversion}</div>
+        <div className="hoverable__content menu-description">
+          <Trans t={t} ns="menu_description">xarray_conversion</Trans>
+        </div>
       </li>
     );
   }
@@ -66,4 +71,5 @@ const ReduxXArrayOption = connect(
   dispatch => ({ openChart: chartProps => dispatch(openChart(chartProps)) })
 )(ReactXArrayOption);
 
-export { ReduxXArrayOption as XArrayOption, ReactXArrayOption };
+export const XArrayOption = withTranslation(["menu", "menu_description"])(ReduxXArrayOption);
+export default withTranslation(["menu", "menu_description"])(ReactXArrayOption);

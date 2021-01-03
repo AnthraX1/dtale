@@ -7,6 +7,7 @@ import { RemovableError } from "../../RemovableError";
 import { buildURLString } from "../../actions/url-utils";
 import { fetchJson } from "../../fetcher";
 import ColumnSelect from "../create/ColumnSelect";
+import { Trans, withTranslation } from "react-i18next";
 
 function validateShowDuplicatesCfg(cfg) {
   const { group } = cfg;
@@ -99,6 +100,7 @@ class ShowDuplicates extends React.Component {
   }
 
   render() {
+    const {t} = this.props;
     return (
       <React.Fragment>
         <ColumnSelect
@@ -113,7 +115,7 @@ class ShowDuplicates extends React.Component {
           <div className="col-md-3" />
           <div className="col-md-8">
             <button className="col-auto btn btn-secondary" onClick={this.test}>
-              {"View Duplicates"}
+              <Trans t={t}>{"View Duplicates"}</Trans>
             </button>
           </div>
         </div>
@@ -136,4 +138,5 @@ ShowDuplicates.propTypes = {
   columns: PropTypes.array,
 };
 
+ShowDuplicates = withTranslation("duplicate")(ShowDuplicates);
 export { ShowDuplicates, validateShowDuplicatesCfg };

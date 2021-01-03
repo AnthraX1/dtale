@@ -26,11 +26,11 @@ export const LABELS = {
   diff: "Row Difference",
 };
 
-export function buildLabel(v) {
+export function buildLabel(v, t) {
   if (_.has(LABELS, v)) {
-    return LABELS[v];
+    return t(LABELS[v]);
   }
-  return _.join(_.map(_.split(v, "_"), _.capitalize), " ");
+  return t(_.join(_.map(_.split(v, "_"), _.capitalize), " "));
 }
 
 export function validateCfg(type, cfg) {

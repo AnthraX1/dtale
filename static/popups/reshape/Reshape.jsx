@@ -11,6 +11,7 @@ import { fetchJson } from "../../fetcher";
 import { Aggregate, validateAggregateCfg } from "./Aggregate";
 import { Pivot, validatePivotCfg } from "./Pivot";
 import { Transpose, validateTransposeCfg } from "./Transpose";
+import { Trans, withTranslation } from "react-i18next";
 
 require("./Reshape.css");
 
@@ -115,10 +116,13 @@ class ReactReshape extends React.Component {
         body = <Pivot columns={this.state.columns} updateState={updateState} />;
         break;
     }
+    const {t} = this.props;
     return (
       <div key="body" className="modal-body">
         <div className="form-group row">
-          <label className="col-md-3 col-form-label text-right">Operation</label>
+          <label className="col-md-3 col-form-label text-right">
+            <Trans t={t}>Operation</Trans>
+          </label>
           <div className="col-md-8">
             <div className="btn-group">
               {_.map(
@@ -140,7 +144,9 @@ class ReactReshape extends React.Component {
                   }
                   return (
                     <button key={i} {...buttonProps}>
-                      <span className="d-block">{label}</span>
+                      <span className="d-block">
+                        <Trans t={t}>{label}</Trans>
+                      </span>
                     </button>
                   );
                 }
@@ -150,7 +156,9 @@ class ReactReshape extends React.Component {
         </div>
         {body}
         <div className="form-group row">
-          <label className="col-md-3 col-form-label text-right">Output</label>
+          <label className="col-md-3 col-form-label text-right">
+            <Trans t={t}>Output</Trans>
+          </label>
           <div className="col-md-8">
             <div className="btn-group">
               {_.map(
@@ -168,7 +176,7 @@ class ReactReshape extends React.Component {
                   }
                   return (
                     <button key={i} {...buttonProps}>
-                      {label}
+                      <Trans t={t}>{label}</Trans>
                     </button>
                   );
                 }
@@ -198,6 +206,7 @@ class ReactReshape extends React.Component {
         </div>
       );
     }
+    const {t} = this.props;
     return [
       error,
       <BouncerWrapper key={0} showBouncer={this.state.loadingColumns}>
@@ -207,7 +216,9 @@ class ReactReshape extends React.Component {
         {codeMarkup}
         <button className="btn btn-primary" onClick={this.state.loadingReshape ? _.noop : this.save}>
           <BouncerWrapper showBouncer={this.state.loadingReshape}>
-            <span>Execute</span>
+            <span>
+              <Trans t={t}>Execute</Trans>
+            </span>
           </BouncerWrapper>
         </button>
       </div>,
@@ -227,4 +238,7 @@ const ReduxReshape = connect(
   ({ dataId, chartData }) => ({ dataId, chartData }),
   dispatch => ({ onClose: chartData => dispatch(closeChart(chartData || {})) })
 )(ReactReshape);
-export { buildForwardURL, ReactReshape, ReduxReshape as Reshape };
+
+ReactReshape = withTranslation("reshape")(ReactReshape)
+const Reshape = withTranslation("reshape")(ReduxReshape)
+export { buildForwardURL, ReactReshape, Reshape };

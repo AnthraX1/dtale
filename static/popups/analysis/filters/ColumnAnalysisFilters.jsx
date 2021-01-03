@@ -10,6 +10,7 @@ import { ANALYSIS_AGGS, TITLES } from "./Constants";
 import { default as GeoFilters, hasCoords, loadCoordVals } from "./GeoFilters";
 import OrdinalInputs from "./OrdinalInputs";
 import TextEnterFilter from "./TextEnterFilter";
+import { withTranslation } from "react-i18next";
 
 class ColumnAnalysisFilters extends React.Component {
   constructor(props) {
@@ -47,16 +48,17 @@ class ColumnAnalysisFilters extends React.Component {
 
   buildChartTypeToggle() {
     const colType = gu.findColType(this.props.dtype);
-    let options = [{ label: TITLES.histogram, value: "histogram" }];
+    const {t} = this.props;
+    let options = [{ label: t(TITLES.histogram), value: "histogram" }];
     if (colType == "string") {
       options = [
-        { label: TITLES.value_counts, value: "value_counts" },
-        { label: TITLES.word_value_counts, value: "word_value_counts" },
+        { label: t(TITLES.value_counts), value: "value_counts" },
+        { label: t(TITLES.word_value_counts), value: "word_value_counts" },
       ];
     } else if (colType === "float") {
-      options.push({ label: TITLES.categories, value: "categories" });
+      options.push({ label: t(TITLES.categories), value: "categories" });
     } else {
-      options.push({ label: TITLES.value_counts, value: "value_counts" });
+      options.push({ label: t(TITLES.value_counts), value: "value_counts" });
     }
     if (hasCoords(this.props.selectedCol, this.props.cols)) {
       options.push({ label: TITLES.geolocation, value: "geolocation" });
@@ -152,7 +154,7 @@ class ColumnAnalysisFilters extends React.Component {
         <div className="form-group row small-gutters mb-4">
           <div className="col type-toggle">{this.buildChartTypeToggle()}</div>
           <div className="col-auto">
-            <div>{renderCodePopupAnchor(code, title)}</div>
+            <div>{renderCodePopupAnchor(code, title, this.props.t)}</div>
           </div>
         </div>
         <div className="form-group row small-gutters mb-0">{filterMarkup}</div>
@@ -171,4 +173,5 @@ ColumnAnalysisFilters.propTypes = {
   buildChart: PropTypes.func,
 };
 
+ColumnAnalysisFilters = withTranslation("constants")(ColumnAnalysisFilters);
 export { ColumnAnalysisFilters };

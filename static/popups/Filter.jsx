@@ -11,6 +11,7 @@ import { buildURLString } from "../actions/url-utils";
 import serverState from "../dtale/serverStateManagement";
 import { fetchJson } from "../fetcher";
 import ContextVariables from "./ContextVariables";
+import { Trans, withTranslation } from "react-i18next";
 
 function saveFilter(dataId, query, callback) {
   fetchJson(buildURLString(`/dtale/test-filter/${dataId}`, { query, save: true }), callback);
@@ -84,6 +85,7 @@ class ReactFilter extends React.Component {
     if (this.state.loading) {
       return <Bouncer />;
     }
+    const {t} = this.props;
     return [
       <RemovableError key={0} {...this.state} onRemove={() => this.setState({ error: null, traceback: null })} />,
       <div key={1} className="row">
@@ -92,7 +94,9 @@ class ReactFilter extends React.Component {
             <div className="col-md-12 h-100">
               {this.renderColumnFilters("columnFilters", "Column Filters")}
               {this.renderColumnFilters("outlierFilters", "Outlier Filters")}
-              <div className="font-weight-bold pt-3 pb-3">Custom Filter:</div>
+              <div className="font-weight-bold pt-3 pb-3">
+                <Trans t={t}>Custom Filter</Trans>:
+              </div>
               <textarea
                 style={{ width: "100%", height: 150 }}
                 value={this.state.query || ""}
@@ -102,42 +106,45 @@ class ReactFilter extends React.Component {
           </div>
         </div>
         <div className="col-md-5">
-          <p className="font-weight-bold">Example queries</p>
+          <p className="font-weight-bold">
+            <Trans t={t}>Example queries</Trans>
+          </p>
           <ul>
             <li>
-              {"drop NaN values: "}
+              <Trans t={t}>drop NaN values</Trans>{": "}
               <span className="font-weight-bold">{"Col == Col"}</span>
             </li>
             <li>
-              {"show only NaN values: "}
+              <Trans t={t}>show only NaN values</Trans>{": "}
               <span className="font-weight-bold">{"Col != Col"}</span>
             </li>
             <li>
-              {"date filtering: "}
+              <Trans t={t}>date filtering</Trans>{": "}
               <span className="font-weight-bold">{`Col == '${moment().format("YYYYMMDD")}'`}</span>
             </li>
             <li>
-              {"in-clause on string column: "}
+              <Trans t={t}>in-clause on string column</Trans>{": "}
               <span className="font-weight-bold">{"Col in ('foo','bar')"}</span>
             </li>
             <li>
-              {"and-clause on numeric column: "}
+
+              <Trans t={t}>and-clause on numeric column</Trans>{": "}
               <span className="font-weight-bold">{"Col1 > 1 and Col2 <= 1"}</span>
             </li>
             <li>
-              {"or-clause on numeric columns: "}
+              <Trans t={t}>or-clause on numeric columns</Trans>{": "}
               <span className="font-weight-bold">{"Col1 > 1 or Col2 < 1"}</span>
             </li>
             <li>
-              {"negative-clause: "}
+              <Trans t={t}>negative-clause</Trans>{": "}
               <span className="font-weight-bold">{"~(Col > 1)"}</span>
             </li>
             <li>
-              {"parenthesis usage: "}
+              <Trans t={t}>parenthesis usage</Trans>{": "}
               <span className="font-weight-bold">{"(Col1 > 1 or Col2 < 1) and (Col3 == 3)"}</span>
             </li>
             <li>
-              {"regex usage (search for substrings 'foo' or 'bar'):"}
+              <Trans t={t}>regex usage (search for substrings 'foo' or 'bar')</Trans>{":"}
               <br />
               <span className="font-weight-bold">{"Col.str.contains('(foo|bar)', case=False)"}</span>
             </li>
@@ -163,6 +170,7 @@ class ReactFilter extends React.Component {
         }
       });
     };
+    const {t} = this.props;
     return [
       <div key="body" className="modal-body filter-modal">
         {this.renderBody()}
@@ -178,13 +186,13 @@ class ReactFilter extends React.Component {
               "titlebar=1,location=1,status=1,width=990,height=450"
             );
           }}>
-          <span>Help</span>
+          <span><Trans t={t}>Help</Trans></span>
         </button>
         <button className="btn btn-primary" onClick={clear}>
-          <span>Clear</span>
+          <span><Trans t={t}>Clear</Trans></span>
         </button>
         <button className="btn btn-primary" onClick={this.save}>
-          <span>Apply</span>
+          <span><Trans t={t}>Apply</Trans></span>
         </button>
       </div>,
     ];
@@ -205,4 +213,6 @@ const ReduxFilter = connect(
   dispatch => ({ onClose: chartData => dispatch(closeChart(chartData || {})) })
 )(ReactFilter);
 
-export { ReactFilter, ReduxFilter as Filter, saveFilter };
+ReactFilter = withTranslation("filter_page")(ReactFilter);
+const Filter = withTranslation("filter_page")(ReduxFilter);
+export { ReactFilter, Filter, saveFilter }

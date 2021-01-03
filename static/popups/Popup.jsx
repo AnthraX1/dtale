@@ -11,6 +11,7 @@ import { closeChart } from "../actions/charts";
 import { buildRangeState } from "../dtale/rangeSelectUtils";
 import DraggableModalDialog from "./DraggableModalDialog";
 import * as popupUtils from "./popupUtils";
+import { withTranslation } from "react-i18next";
 
 class ReactPopup extends React.Component {
   constructor(props) {
@@ -98,4 +99,5 @@ const ReduxPopup = connect(
   dispatch => ({ onClose: chartData => dispatch(closeChart(chartData || {})) })
 )(ReactPopup);
 
-export { ReactPopup, ReduxPopup as Popup };
+export default withTranslation(["menu", "popup"])(ReactPopup);
+export const Popup = withTranslation(["menu", "popup"])(ReduxPopup);

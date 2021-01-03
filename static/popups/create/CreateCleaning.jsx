@@ -4,9 +4,9 @@ import React from "react";
 import Select, { createFilter } from "react-select";
 
 import ColumnSelect from "./ColumnSelect";
-import Descriptions from "./cleaning-descriptions.json";
 import { buildCleaningCode as buildCode } from "./codeSnippets";
 import Languages from "./nltk-languages.json";
+import { Trans, withTranslation } from "react-i18next";
 
 function validateCleaningCfg({ col, cleaners, stopwords, caseType }) {
   if (!col) {
@@ -124,6 +124,7 @@ class CreateCleaning extends React.Component {
 
   render() {
     const prePopulatedCol = _.get(this.props, "prePopulated.col");
+    const {t} = this.props;
     return (
       <React.Fragment>
         {!prePopulatedCol && (
@@ -137,7 +138,9 @@ class CreateCleaning extends React.Component {
           />
         )}
         <div className="form-group row">
-          <label className="col-md-3 col-form-label text-right">Function(s)</label>
+          <label className="col-md-3 col-form-label text-right">
+            <Trans t={t}>Function(s)</Trans>
+          </label>
           <div className="col-md-8 builders">
             <div className="row">
               {_.map(CLEANERS, (cleaner, i) => {
@@ -152,7 +155,7 @@ class CreateCleaning extends React.Component {
                   onClick: () => this.updateCleaners(cleaner.value),
                   onMouseEnter: () =>
                     this.setState({
-                      description: _.get(Descriptions, cleaner.value),
+                      description: t("cleaning_descriptions:"+cleaner.value),
                     }),
                   onMouseLeave: () => this.setState({ description: null }),
                 };
@@ -164,7 +167,9 @@ class CreateCleaning extends React.Component {
                 }
                 return (
                   <div key={i} className="col-md-3 p-1">
-                    <button {...buttonProps}>{cleaner.label}</button>
+                    <button {...buttonProps}>
+                      <Trans t={t}>{cleaner.label}</Trans>
+                    </button>
                   </div>
                 );
               })}
@@ -176,7 +181,9 @@ class CreateCleaning extends React.Component {
         </div>
         {_.includes(this.state.cleaners, "stopwords") && (
           <div className="form-group row">
-            <label className="col-md-3 col-form-label text-right">Stop Words</label>
+            <label className="col-md-3 col-form-label text-right">
+              <Trans t={t}>Stop Words</Trans>
+            </label>
             <div className="col-md-8">
               <input
                 type="text"
@@ -189,7 +196,9 @@ class CreateCleaning extends React.Component {
         )}
         {_.includes(this.state.cleaners, "nltk_stopwords") && (
           <div className="form-group row">
-            <label className="col-md-3 col-form-label text-right">NLTK Language</label>
+            <label className="col-md-3 col-form-label text-right">
+              <Trans t={t}>NLTK Language</Trans>
+            </label>
             <div className="col-md-8">
               <Select
                 className="Select is-clearable is-searchable Select--single"
@@ -207,7 +216,9 @@ class CreateCleaning extends React.Component {
         )}
         {_.includes(this.state.cleaners, "update_case") && (
           <div className="form-group row">
-            <label className="col-md-3 col-form-label text-right">Case</label>
+            <label className="col-md-3 col-form-label text-right">
+              <Trans t={t}>Case</Trans>
+            </label>
             <div className="col-md-8">
               <div className="btn-group">
                 {_.map(
@@ -226,7 +237,7 @@ class CreateCleaning extends React.Component {
                     }
                     return (
                       <button key={caseType} {...buttonProps}>
-                        {label}
+                        <Trans t={t}>{label}</Trans>
                       </button>
                     );
                   }
@@ -247,4 +258,5 @@ CreateCleaning.propTypes = {
   prePopulated: PropTypes.object,
 };
 
+CreateCleaning = withTranslation("column_menu")(CreateCleaning);
 export { CreateCleaning, validateCleaningCfg, buildCode, CLEANERS };

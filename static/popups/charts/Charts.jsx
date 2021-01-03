@@ -9,6 +9,7 @@ import { buildURLString } from "../../actions/url-utils";
 import { fetchJson } from "../../fetcher";
 import { Aggregations } from "./Aggregations";
 import ChartsBody from "./ChartsBody";
+import { Trans, withTranslation } from "react-i18next";
 
 function generateChartState(state, { dataId }) {
   const { group, x, y, query, aggregation, rollingWindow, rollingComputation } = state;
@@ -74,12 +75,15 @@ class ReactCharts extends React.Component {
 
   renderSelect(label, prop, otherProps, isMulti = false) {
     const { columns } = this.state;
+    const {t} = this.props;
     let finalOptions = _.map(columns, "name");
     const otherValues = _(this.state).pick(otherProps).values().flatten().map("value").compact().value();
     finalOptions = _.difference(finalOptions, otherValues);
     return (
       <div className="input-group mr-3">
-        <span className="input-group-addon">{label}</span>
+        <span className="input-group-addon">
+          <Trans t={t}>{label}</Trans>
+        </span>
         <Select
           isMulti={isMulti}
           className="Select is-clearable is-searchable Select--single"
@@ -101,6 +105,7 @@ class ReactCharts extends React.Component {
 
   render() {
     const { columns, query, error } = this.state;
+    const { t } = this.props;
     if (_.isEmpty(columns)) {
       return error;
     }
@@ -109,7 +114,9 @@ class ReactCharts extends React.Component {
         <div className="row pt-3 pb-3 charts-filters">
           <div className="col">
             <div className="input-group">
-              <span className="input-group-addon">Query</span>
+              <span className="input-group-addon">
+                <Trans t={t}>Query</Trans>
+              </span>
               <input
                 className="form-control input-sm"
                 type="text"
@@ -130,7 +137,7 @@ class ReactCharts extends React.Component {
             <button
               className="btn btn-primary float-right"
               onClick={() => this.setState(generateChartState(this.state, this.props))}>
-              <span>Load</span>
+              <span><Trans t={t}>Load</Trans></span>
             </button>
           </div>
         </div>
@@ -163,4 +170,6 @@ ReactCharts.propTypes = {
 
 const ReduxCharts = connect(({ dataId, chartData }) => ({ dataId, chartData }))(ReactCharts);
 
-export { ReactCharts, ReduxCharts as Charts };
+const Charts = withTranslation("charts")(ReduxCharts);
+ReactCharts = withTranslation("charts")(ReduxCharts);
+export { ReactCharts, Charts };

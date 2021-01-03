@@ -4,13 +4,13 @@ import React from "react";
 import { components } from "react-select";
 
 import { buildURLString, saveColFilterUrl, toggleOutlierFilterUrl } from "../actions/url-utils";
-import Descriptions from "../dtale/column/column-menu-descriptions.json";
 import { exports as gu } from "../dtale/gridUtils";
 import menuFuncs from "../dtale/menu/dataViewerMenuUtils";
 import { fetchJson } from "../fetcher";
 import { DateFilter } from "./DateFilter";
 import { NumericFilter } from "./NumericFilter";
 import { StringFilter } from "./StringFilter";
+import { Trans, withTranslation } from "react-i18next";
 
 require("./ColumnFilter.css");
 
@@ -153,7 +153,9 @@ class ColumnFilter extends React.Component {
               <components.LoadingIndicator getStyles={getStyles} cx={() => ""} />
             </div>
           </div>
-          <div className="hoverable__content col-menu-desc">{Descriptions.filter}</div>
+          <div className="hoverable__content col-menu-desc">
+            <Trans t={t} ns="menu_description">filter</Trans>
+          </div>
         </li>
       );
     }
@@ -188,7 +190,9 @@ class ColumnFilter extends React.Component {
           <div className="m-auto">
             <div className="column-filter m-2">{markup}</div>
           </div>
-          <div className="hoverable__content col-menu-desc">{Descriptions.filter}</div>
+          <div className="hoverable__content col-menu-desc">
+            <Trans t={t} ns="menu_description">filter</Trans>
+          </div>
         </li>
       );
       missingToggle = this.renderMissingToggle(false);
@@ -212,4 +216,4 @@ ColumnFilter.propTypes = {
   outlierFilters: PropTypes.object,
 };
 
-export default ColumnFilter;
+export default withTranslation(["menu", "menu_description"])(ColumnFilter);

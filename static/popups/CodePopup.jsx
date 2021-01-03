@@ -6,10 +6,11 @@ import { docco } from "react-syntax-highlighter/dist/esm/styles/hljs";
 import { canCopy, CopyToClipboard } from "../CopyToClipboard";
 import { JSAnchor } from "../JSAnchor";
 import menuFuncs from "../dtale/menu/dataViewerMenuUtils";
+import { Trans, withTranslation } from "react-i18next";
 
 require("./CodePopup.css");
 
-function renderCodePopupAnchor(code, title) {
+function renderCodePopupAnchor(code, title, t) {
   const onClick = () => {
     window.code_popup = { code, title };
     menuFuncs.open("/dtale/code-popup", null, 450, 700);
@@ -17,7 +18,9 @@ function renderCodePopupAnchor(code, title) {
   return (
     <JSAnchor onClick={onClick}>
       <i className="ico-code pr-3" />
-      <span>Code Export</span>
+      <span>
+        <Trans t={t}>Code Export</Trans>
+      </span>
     </JSAnchor>
   );
 }
@@ -27,13 +30,15 @@ class CodePopup extends React.Component {
     super(props);
     this.renderCopyToClipboard = this.renderCopyToClipboard.bind(this);
   }
-
   renderCopyToClipboard() {
+    const {t} = this.props;
     if (canCopy()) {
       const buttonBuilder = props => (
         <button className="btn btn-primary" {...props}>
           <i className="far fa-copy pr-3" />
-          <span>Copy</span>
+          <span>
+            <Trans t={t}>Copy</Trans>
+          </span>
         </button>
       );
       return (
@@ -61,4 +66,5 @@ CodePopup.propTypes = {
   code: PropTypes.string,
 };
 
+CodePopup = withTranslation("code_export")(CodePopup)
 export { CodePopup, renderCodePopupAnchor };

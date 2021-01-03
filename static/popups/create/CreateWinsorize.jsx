@@ -5,6 +5,7 @@ import ReactSlider from "react-slider";
 import styled from "styled-components";
 
 import ColumnSelect from "./ColumnSelect";
+import { Trans, withTranslation } from "react-i18next";
 
 require("./CreateWinsorize.css");
 
@@ -93,6 +94,7 @@ class CreateWinsorize extends React.Component {
   }
 
   render() {
+    const {t} = this.props;
     return (
       <React.Fragment>
         <ColumnSelect
@@ -114,7 +116,9 @@ class CreateWinsorize extends React.Component {
           isMulti
         />
         <div className="form-group row">
-          <label className="col-md-3 col-form-label text-right">Limits</label>
+          <label className="col-md-3 col-form-label text-right">
+            <Trans t={t}>Limits</Trans>
+          </label>
           <div className="col-md-8">
             <div className="input-group">
               <input
@@ -148,14 +152,16 @@ class CreateWinsorize extends React.Component {
           </div>
         </div>
         <div className="form-group row">
-          <label className="col-md-3 col-form-label text-right">Include Limits</label>
+          <label className="col-md-3 col-form-label text-right">
+            <Trans t={t}>Include Limits</Trans>
+          </label>
           <div className="col-md-8 mt-auto mb-auto">
-            <span>Lower:</span>
+            <span><Trans t={t}>Lower</Trans>:</span>
             <i
               className={`ico-check-box${this.state.includeLower ? "" : "-outline-blank"} pointer pl-3 pr-5`}
               onClick={() => this.updateState({ includeLower: !this.state.includeLower })}
             />
-            <span>Upper:</span>
+            <span><Trans t={t}>Upper</Trans>:</span>
             <i
               className={`ico-check-box${this.state.includeUpper ? "" : "-outline-blank"} pointer pl-3`}
               onClick={() => this.updateState({ includeUpper: !this.state.includeUpper })}
@@ -173,4 +179,5 @@ CreateWinsorize.propTypes = {
   namePopulated: PropTypes.bool,
 };
 
+CreateWinsorize = withTranslation("column_menu")(CreateWinsorize);
 export { CreateWinsorize, validateWinsorizeCfg, buildCode };

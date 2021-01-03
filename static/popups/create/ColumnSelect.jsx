@@ -4,6 +4,7 @@ import React from "react";
 import Select, { createFilter } from "react-select";
 
 import { exports as gu } from "../../dtale/gridUtils";
+import { withTranslation, Trans } from "react-i18next";
 
 class ColumnSelect extends React.Component {
   constructor(props) {
@@ -29,7 +30,9 @@ class ColumnSelect extends React.Component {
     finalOptions = _.difference(finalOptions, otherValues);
     return (
       <div key={prop} className="form-group row">
-        <label className="col-md-3 col-form-label text-right">{label || prop}</label>
+        <label className="col-md-3 col-form-label text-right">
+          <Trans t={this.props.t} ns="column_menu">{label || prop}</Trans>
+        </label>
         <div className="col-md-8">
           <div className="input-group">
             <Select
@@ -67,4 +70,4 @@ ColumnSelect.propTypes = {
 };
 ColumnSelect.defaultProps = { isMulti: false, otherProps: [] };
 
-export default ColumnSelect;
+export default withTranslation("column_menu")(ColumnSelect);

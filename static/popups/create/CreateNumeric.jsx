@@ -2,6 +2,7 @@ import _ from "lodash";
 import PropTypes from "prop-types";
 import React from "react";
 import Select, { createFilter } from "react-select";
+import { withTranslation, Trans } from "react-i18next";
 
 import { exports as gu } from "../../dtale/gridUtils";
 
@@ -155,7 +156,7 @@ class CreateNumeric extends React.Component {
               }
               return (
                 <button key={`${prop}-${t}`} {...buttonProps}>
-                  {_.capitalize(t)}
+                  {this.props.t(_.capitalize(t))}
                 </button>
               );
             })}
@@ -169,7 +170,9 @@ class CreateNumeric extends React.Component {
   render() {
     return [
       <div key={0} className="form-group row">
-        <label className="col-md-3 col-form-label text-right">Operation</label>
+        <label className="col-md-3 col-form-label text-right">
+          <Trans t={this.props.t} ns="column_menu">Operation</Trans>
+        </label>
         <div className="col-md-8">
           <div className="btn-group">
             {_.map(["sum", "difference", "multiply", "divide"], operation => {
@@ -182,7 +185,7 @@ class CreateNumeric extends React.Component {
               }
               return (
                 <button key={operation} {...buttonProps}>
-                  {_.capitalize(operation)}
+                  {this.props.t(_.capitalize(operation))}
                 </button>
               );
             })}
@@ -200,4 +203,5 @@ CreateNumeric.propTypes = {
   columns: PropTypes.array,
 };
 
-export { CreateNumeric, validateNumericCfg, buildCode };
+CreateNumeric = withTranslation("column_menu")(CreateNumeric);
+export { CreateNumeric, validateNumericCfg, buildCode }

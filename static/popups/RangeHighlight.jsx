@@ -4,6 +4,7 @@ import React from "react";
 import { connect } from "react-redux";
 
 import ColumnSelect from "./create/ColumnSelect";
+import { Trans, withTranslation } from "react-i18next";
 
 const BASE_RANGE = {
   isEquals: false,
@@ -116,6 +117,7 @@ class ReactRangeHighlight extends React.Component {
       const currRange = retrieveRange(col, this.state.ranges);
       this.setState({ col: col, currRange });
     };
+    const {t} = this.props;
     return (
       <div key="body" className="modal-body">
         <ColumnSelect
@@ -133,7 +135,7 @@ class ReactRangeHighlight extends React.Component {
                 className={`ico-check-box${this.state.currRange[flag] ? "" : "-outline-blank"} pointer mr-3 float-left`}
                 onClick={() => this.updateHighlights({ [flag]: !this.state.currRange[flag] })}
               />
-              {label}
+              <Trans t={t}>{label}</Trans>
             </label>
             <div className="col-md-7">
               <input
@@ -150,7 +152,7 @@ class ReactRangeHighlight extends React.Component {
           <div className="col-md-4" />
           <div className="col-md-7">
             <button className="btn btn-primary float-right" onClick={this.applyRange}>
-              {"Apply"}
+              <Trans t={t}>{"Apply"}</Trans>
             </button>
           </div>
         </div>
@@ -163,7 +165,7 @@ class ReactRangeHighlight extends React.Component {
               />
             </div>
             <div className="col-md-9">
-              <b>{col === "all" ? ALL_OPTION.label : col}</b>
+              <b>{col === "all" ? t(ALL_OPTION.label) : col}</b>
               {`: ${rangeAsStr(range)}`}
             </div>
             <div className="col-md-2 p-0">
@@ -187,4 +189,6 @@ ReactRangeHighlight.propTypes = {
 
 const ReduxRangeHighlight = connect(state => _.pick(state, ["chartData"]))(ReactRangeHighlight);
 
-export { ReactRangeHighlight, ReduxRangeHighlight as RangeHighlight, MODES };
+const RangeHighlight = withTranslation("rangeHighlights")(ReduxRangeHighlight);
+ReactRangeHighlight = withTranslation("rangeHighlights")(ReactRangeHighlight);
+export { ReactRangeHighlight, RangeHighlight, MODES };

@@ -1,5 +1,6 @@
 import PropTypes from "prop-types";
 import React from "react";
+import { Trans, withTranslation } from "react-i18next";
 
 require("./LowVarianceOption.css");
 
@@ -9,23 +10,33 @@ class LowVarianceOption extends React.Component {
   }
 
   render() {
-    const { toggleLowVarianceBackground, backgroundMode } = this.props;
+    const { toggleLowVarianceBackground, backgroundMode, t } = this.props;
     const iconClass = `ico-check-box${backgroundMode == "lowVariance" ? "" : "-outline-blank"}`;
     return (
       <li className="hoverable low-variance">
         <span className="toggler-action">
           <button className="btn btn-plain" onClick={toggleLowVarianceBackground}>
             <i className={iconClass} style={{ marginTop: "-.25em" }} />
-            <span className="font-weight-bold">Low Variance Flag</span>
+            <span className="font-weight-bold">
+              <Trans t={t} ns={"menu"}>Low Variance Flag</Trans>
+            </span>
           </button>
         </span>
         <div className="hoverable__content menu-description">
-          <span>Show flags on column headers where both these conditions are true:</span>
+          <span>
+            <Trans t={t} ns={"menu_description"}>low_variance_1</Trans>
+          </span>
           <ul className="low-variance-conditions">
-            <li>{"Count of unique values / column size < 10%"}</li>
-            <li>{"Count of most common value / Count of second most common value > 20"}</li>
+            <li>
+              <Trans t={t} ns={"menu_description"}>low_variance_2</Trans>
+            </li>
+            <li>
+              <Trans t={t} ns={"menu_description"}>low_variance_3</Trans>
+            </li>
           </ul>
-          <span>{`You can view variance information by clicking the "Variance" option in the column menu.`}</span>
+          <span>
+            <Trans t={t} ns={"menu_description"}>low_variance_4</Trans>
+          </span>
         </div>
       </li>
     );
@@ -37,4 +48,4 @@ LowVarianceOption.propTypes = {
   toggleLowVarianceBackground: PropTypes.func,
 };
 
-export default LowVarianceOption;
+export default withTranslation("menu")(LowVarianceOption);
