@@ -22,6 +22,7 @@ import { ReactReshape as Reshape } from "./popups/reshape/Reshape";
 import { Variance } from "./popups/variance/Variance";
 import app from "./reducers/dtale";
 import { createStore } from "./reducers/store";
+import "./i18n";
 
 require("./publicPath");
 

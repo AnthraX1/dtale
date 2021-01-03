@@ -3,6 +3,7 @@ import React from "react";
 
 import app from "../../reducers/dtale";
 import Descriptions from "../menu-descriptions.json";
+import { Trans } from "react-i18next";
 
 class InstancesOption extends React.Component {
   constructor(props) {
@@ -17,7 +18,7 @@ class InstancesOption extends React.Component {
           <button className="btn btn-plain" onClick={this.props.open}>
             <i className="ico-apps" />
             <span className="font-weight-bold">
-              {"Instances "}
+              <Trans>{"Instances "}</Trans>
               <span className="badge badge-secondary">{processCt}</span>
             </span>
           </button>

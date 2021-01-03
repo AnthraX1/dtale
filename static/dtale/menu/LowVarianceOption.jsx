@@ -1,5 +1,6 @@
 import PropTypes from "prop-types";
 import React from "react";
+import { Trans } from "react-i18next";
 
 require("./LowVarianceOption.css");
 
@@ -16,7 +17,9 @@ class LowVarianceOption extends React.Component {
         <span className="toggler-action">
           <button className="btn btn-plain" onClick={toggleLowVarianceBackground}>
             <i className={iconClass} style={{ marginTop: "-.25em" }} />
-            <span className="font-weight-bold">Low Variance Flag</span>
+            <span className="font-weight-bold">
+              <Trans>Low Variance Flag</Trans>
+            </span>
           </button>
         </span>
         <div className="hoverable__content menu-description">

@@ -5,6 +5,7 @@ import { connect } from "react-redux";
 
 import { openChart } from "../../actions/charts";
 import Descriptions from "../menu-descriptions.json";
+import { Trans } from "react-i18next";
 
 const DESCRIPTION = "View individual xarray dimensions. You are currently viewing:";
 
@@ -31,7 +32,9 @@ class ReactXArrayOption extends React.Component {
           <span className="toggler-action">
             <button className="btn btn-plain" onClick={() => openXArrayPopup("xarray-dimensions")}>
               <i className="ico-key" />
-              <span className="font-weight-bold">XArray Dimensions</span>
+              <span className="font-weight-bold">
+                <Trans>XArray Dimensions</Trans>
+              </span>
             </button>
           </span>
           <div className="hoverable__content menu-description">
@@ -45,7 +48,9 @@ class ReactXArrayOption extends React.Component {
         <span className="toggler-action">
           <button className="btn btn-plain" onClick={() => openXArrayPopup("xarray-indexes")}>
             <i className="ico-tune" />
-            <span className="font-weight-bold">Convert To XArray</span>
+            <span className="font-weight-bold">
+              <Trans>Convert To XArray</Trans>
+            </span>
           </button>
         </span>
         <div className="hoverable__content menu-description">{Descriptions.xarray_conversion}</div>

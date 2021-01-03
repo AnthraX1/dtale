@@ -3,6 +3,7 @@ import PropTypes from "prop-types";
 import React from "react";
 
 import Descriptions from "../menu-descriptions.json";
+import { Trans } from "react-i18next";
 
 class HeatMapOption extends React.Component {
   constructor(props) {
@@ -17,7 +18,9 @@ class HeatMapOption extends React.Component {
         <span className="toggler-action">
           <i className={`fa fa-${heatmapActive ? "fire-extinguisher" : "fire-alt"} ml-2 mr-4`} />
         </span>
-        <span className={`font-weight-bold pl-2${heatmapActive ? "flames" : ""}`}>{"Heat Map"}</span>
+        <span className={`font-weight-bold pl-2${heatmapActive ? "flames" : ""}`}>
+          <Trans>Heat Map</Trans>
+        </span>
         <div className="btn-group compact ml-auto mr-3 font-weight-bold column-sorting" style={{ fontSize: "75%" }}>
           {_.map(
             [

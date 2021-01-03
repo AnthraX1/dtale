@@ -4,6 +4,7 @@ import React from "react";
 
 import { Bouncer } from "../../Bouncer";
 import Descriptions from "../menu-descriptions.json";
+import { Trans } from "react-i18next";
 
 class RangeHighlightOption extends React.Component {
   constructor(props) {
@@ -30,7 +31,9 @@ class RangeHighlightOption extends React.Component {
                 </div>
               )}
               {this.props.backgroundMode !== "range" && <div className="bg-range-icon" />}
-              <span className="font-weight-bold pl-4">Highlight Range</span>
+              <span className="font-weight-bold pl-4">
+                <Trans>Highlight Range</Trans>
+              </span>
             </div>
           </button>
         </span>

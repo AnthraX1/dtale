@@ -11,6 +11,7 @@ import { buildURLString } from "../actions/url-utils";
 import serverState from "../dtale/serverStateManagement";
 import { fetchJson } from "../fetcher";
 import ContextVariables from "./ContextVariables";
+import { Trans } from "react-i18next";
 
 function saveFilter(dataId, query, callback) {
   fetchJson(buildURLString(`/dtale/test-filter/${dataId}`, { query, save: true }), callback);
@@ -92,7 +93,9 @@ class ReactFilter extends React.Component {
             <div className="col-md-12 h-100">
               {this.renderColumnFilters("columnFilters", "Column Filters")}
               {this.renderColumnFilters("outlierFilters", "Outlier Filters")}
-              <div className="font-weight-bold pt-3 pb-3">Custom Filter:</div>
+              <div className="font-weight-bold pt-3 pb-3">
+                <Trans>Custom Filter</Trans>:
+              </div>
               <textarea
                 style={{ width: "100%", height: 150 }}
                 value={this.state.query || ""}

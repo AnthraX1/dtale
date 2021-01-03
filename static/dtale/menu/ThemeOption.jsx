@@ -7,6 +7,7 @@ import actions from "../../actions/dtale";
 import { exports as gu } from "../gridUtils";
 import Descriptions from "../menu-descriptions.json";
 import serverStateManagement from "../serverStateManagement";
+import { Trans } from "react-i18next";
 
 class ReactThemeOption extends React.Component {
   constructor(props) {
@@ -21,7 +22,9 @@ class ReactThemeOption extends React.Component {
         <span className="toggler-action">
           <i className="fas fa-adjust" />
         </span>
-        <span className="font-weight-bold pl-2">Theme</span>
+        <span className="font-weight-bold pl-2">
+          <Trans>Theme</Trans>
+        </span>
         <div className="btn-group compact ml-auto mr-3 font-weight-bold column-sorting">
           {_.map(gu.THEMES, value => (
             <button

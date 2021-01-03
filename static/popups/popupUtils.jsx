@@ -22,12 +22,15 @@ import { PredictivePowerScore } from "./pps/PredictivePowerScore";
 import { CreateReplacement } from "./replacement/CreateReplacement";
 import { Reshape } from "./reshape/Reshape";
 import { Variance } from "./variance/Variance";
+import { Trans } from "react-i18next";
 
 function buildFilter() {
   const title = (
     <React.Fragment>
       <i className="fa fa-filter" />
-      <strong>Custom Filter</strong>
+      <strong>
+        <Trans>Custom Filter</Trans>
+      </strong>
     </React.Fragment>
   );
   const body = <Filter />;

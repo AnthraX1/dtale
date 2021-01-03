@@ -1,0 +1,62 @@
+{
+  "en": {
+    "translation": {
+      "Convert To XArray": "Convert To XArray",
+      "XArray Dimensions": "XArray Dimensions",
+      "Custom Filter": "Custom Filter",
+      "Build Column": "Build Column",
+      "Summarize Data": "Summarize Data",
+      "Correlations": "Correlations",
+      "Predictive Power Score": "Predictive Power Score",
+      "Charts": "Charts",
+      "Highlight Dtypes": "Highlight Dtypes",
+      "Highlight Missing": "Highlight Missing",
+      "Highlight Outliers": "Highlight Outliers",
+      "Code Export": "Code Export",
+      "Export": "Export",
+      "Refresh Widths": "Refresh Widths",
+      "About": "About",
+      "Reload Data": "Reload Data",
+      "Open In New Tab": "Open In New Tab",
+      "Shutdown": "Shutdown",
+      "Duplicates": "Duplicates",
+      "Highlight Range": "Highlight Range",
+      "Low Variance Flag": "Low Variance Flag",
+      "Instances ": "Instances ",
+      "Load Data": "Load Data",
+      "Theme": "Theme",
+      "Heat Map": "Heat Map",
+      "Describe": "Describe"
+    }
+  },
+  "cn": {
+    "translation": {
+      "Convert To XArray": "转换成XArray",
+      "XArray Dimensions": "XArray维度",
+      "Custom Filter": "自定义过滤",
+      "Build Column": "新建列",
+      "Summarize Data": "汇总数据",
+      "Correlations": "相关性",
+      "Predictive Power Score": "预测能力得分",
+      "Charts": "图表",
+      "Highlight Dtypes": "高亮显示Dtypes",
+      "Highlight Missing": "高亮显示缺失",
+      "Highlight Outliers": "高亮显示离群值",
+      "Code Export": "代码导出",
+      "Export": "导出",
+      "Refresh Widths": "刷新列宽",
+      "About": "关于",
+      "Reload Data": "重新加载数据",
+      "Open In New Tab": "在新标签页中打开",
+      "Shutdown": "关闭",
+      "Duplicates": "重复项",
+      "Highlight Range": "高亮显示范围",
+      "Low Variance Flag": "低方差标志",
+      "Instances ": "实例 ",
+      "Load Data": "加载数据",
+      "Theme": "主题",
+      "Heat Map": "热点图",
+      "Describe": "描述"
+    }
+  }
+}

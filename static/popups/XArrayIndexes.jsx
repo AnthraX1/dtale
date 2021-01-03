@@ -7,6 +7,7 @@ import Select, { createFilter } from "react-select";
 import { RemovableError } from "../RemovableError";
 import actions from "../actions/dtale";
 import { fetchJson } from "../fetcher";
+import { Trans } from "react-i18next";
 
 class ReactXArrayIndexes extends React.Component {
   constructor(props) {
@@ -71,7 +72,9 @@ class ReactXArrayIndexes extends React.Component {
       </div>,
       <div key="footer" className="modal-footer">
         <button className="btn btn-primary" disabled={_.size(this.state.index) === 0} onClick={this.convert}>
-          <span>Convert to XArray</span>
+          <span>
+            <Trans>Convert to XArray</Trans>
+          </span>
         </button>
       </div>,
     ];
