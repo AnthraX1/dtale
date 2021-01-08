@@ -4,8 +4,7 @@ import React from "react";
 import { connect } from "react-redux";
 
 import { openChart } from "../../actions/charts";
-import Descriptions from "../menu-descriptions.json";
-import { Trans } from "react-i18next";
+import { Trans, withTranslation } from "react-i18next";
 
 const DESCRIPTION = "View individual xarray dimensions. You are currently viewing:";
 
@@ -25,6 +24,7 @@ class ReactXArrayOption extends React.Component {
   }
 
   render() {
+    const {t} = this.props;
     const openXArrayPopup = type => this.props.openChart(_.assignIn({ type }, this.props));
     if (this.props.xarray) {
       return (
@@ -33,7 +33,7 @@ class ReactXArrayOption extends React.Component {
             <button className="btn btn-plain" onClick={() => openXArrayPopup("xarray-dimensions")}>
               <i className="ico-key" />
               <span className="font-weight-bold">
-                <Trans>XArray Dimensions</Trans>
+                <Trans t={t}>XArray Dimensions</Trans>
               </span>
             </button>
           </span>
@@ -49,11 +49,13 @@ class ReactXArrayOption extends React.Component {
           <button className="btn btn-plain" onClick={() => openXArrayPopup("xarray-indexes")}>
             <i className="ico-tune" />
             <span className="font-weight-bold">
-              <Trans>Convert To XArray</Trans>
+              <Trans t={t}>Convert To XArray</Trans>
             </span>
           </button>
         </span>
-        <div className="hoverable__content menu-description">{Descriptions.xarray_conversion}</div>
+        <div className="hoverable__content menu-description">
+          <Trans t={t} ns="menu_description">xarray_conversion</Trans>
+        </div>
       </li>
     );
   }
@@ -71,4 +73,5 @@ const ReduxXArrayOption = connect(
   dispatch => ({ openChart: chartProps => dispatch(openChart(chartProps)) })
 )(ReactXArrayOption);
 
-export { ReduxXArrayOption as XArrayOption, ReactXArrayOption };
+export const XArrayOption = withTranslation(["menu", "menu_description"])(ReduxXArrayOption);
+export default withTranslation(["menu", "menu_description"])(ReactXArrayOption);

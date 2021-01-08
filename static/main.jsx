@@ -110,9 +110,9 @@ if (_.startsWith(pathname, "/dtale/popup")) {
   const store = createStore(app.store);
   store.dispatch(actions.init());
   ReactDOM.render(
-    <Provider store={store}>
-      <DataViewer />
-    </Provider>,
-    document.getElementById("content")
+      <Provider store={store}>
+        <DataViewer />
+      </Provider>,
+      document.getElementById("content")
   );
 }

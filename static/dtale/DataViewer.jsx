@@ -21,8 +21,8 @@ import { GridEventHandler } from "./GridEventHandler";
 import { MeasureText } from "./MeasureText";
 import { ColumnMenu } from "./column/ColumnMenu";
 import { exports as gu } from "./gridUtils";
-import Descriptions from "./menu-descriptions.json";
 import { DataViewerMenu } from "./menu/DataViewerMenu";
+import { Trans, withTranslation } from "react-i18next";
 
 require("./DataViewer.css");
 const URL_PROPS = ["ids", "sortInfo"];
@@ -216,6 +216,7 @@ class ReactDataViewer extends React.Component {
 
   render() {
     const { formattingOpen } = this.state;
+    const { t } = this.props;
     return (
       <GridEventHandler propagateState={this.propagateState} gridState={this.state}>
         <DtaleHotkeys propagateState={this.propagateState} {...this.state} />
@@ -264,7 +265,7 @@ class ReactDataViewer extends React.Component {
           noInfo={gu.hasNoInfo(this.state)}
         />
         <div id="edit-tt" className="hoverable__content edit-cell" style={{ display: "none" }}>
-          {Descriptions.editing}
+            <Trans t={t} ns="menu_description">editing</Trans>
         </div>
       </GridEventHandler>
     );
@@ -295,4 +296,6 @@ const ReduxDataViewer = connect(
   })
 )(ReactDataViewer);
 
-export { ReduxDataViewer as DataViewer, ReactDataViewer };
+export default withTranslation(["menu", "menu_description"])(ReactDataViewer);
+export const DataViewer = withTranslation(["menu", "menu_description"])(ReduxDataViewer);
+

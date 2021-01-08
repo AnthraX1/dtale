@@ -5,9 +5,8 @@ import { connect } from "react-redux";
 
 import actions from "../../actions/dtale";
 import { exports as gu } from "../gridUtils";
-import Descriptions from "../menu-descriptions.json";
 import serverStateManagement from "../serverStateManagement";
-import { Trans } from "react-i18next";
+import { Trans, withTranslation } from "react-i18next";
 
 class ReactThemeOption extends React.Component {
   constructor(props) {
@@ -15,7 +14,7 @@ class ReactThemeOption extends React.Component {
   }
 
   render() {
-    const { setTheme, theme } = this.props;
+    const { setTheme, theme, t } = this.props;
     const updateTheme = newTheme => () => serverStateManagement.updateTheme(newTheme, () => setTheme(newTheme));
     return (
       <li className="hoverable" style={{ color: "#565b68" }}>
@@ -23,7 +22,7 @@ class ReactThemeOption extends React.Component {
           <i className="fas fa-adjust" />
         </span>
         <span className="font-weight-bold pl-2">
-          <Trans>Theme</Trans>
+          <Trans t={t} ns="menu">Theme</Trans>
         </span>
         <div className="btn-group compact ml-auto mr-3 font-weight-bold column-sorting">
           {_.map(gu.THEMES, value => (
@@ -36,7 +35,9 @@ class ReactThemeOption extends React.Component {
             </button>
           ))}
         </div>
-        <div className="hoverable__content menu-description">{Descriptions.theme}</div>
+        <div className="hoverable__content menu-description">
+            <Trans t={t} ns="menu_description">theme</Trans>
+        </div>
       </li>
     );
   }
@@ -52,4 +53,5 @@ const ReduxThemeOption = connect(
   dispatch => ({ setTheme: theme => dispatch(actions.setTheme(theme)) })
 )(ReactThemeOption);
 
-export { ReduxThemeOption as ThemeOption, ReactThemeOption };
+export const ThemeOption = withTranslation(["menu", "menu_description"])(ReduxThemeOption);
+export default withTranslation(["menu", "menu_description"])(ReactThemeOption)

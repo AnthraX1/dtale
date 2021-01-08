@@ -8,7 +8,6 @@ import { connect } from "react-redux";
 import ConditionalRender from "../../ConditionalRender";
 import { openChart } from "../../actions/charts";
 import bu from "../backgroundUtils";
-import Descriptions from "../menu-descriptions.json";
 import DescribeOption from "./DescribeOption";
 import DuplicatesOption from "./DuplicatesOption";
 import HeatMapOption from "./HeatMapOption";
@@ -19,7 +18,7 @@ import { ThemeOption } from "./ThemeOption";
 import UploadOption from "./UploadOption";
 import { XArrayOption } from "./XArrayOption";
 import menuFuncs from "./dataViewerMenuUtils";
-import { Trans } from "react-i18next";
+import { Trans, withTranslation } from "react-i18next";
 
 class ReactDataViewerMenu extends React.Component {
   render() {
@@ -53,6 +52,7 @@ class ReactDataViewerMenu extends React.Component {
       $(document).unbind("click.gridActions");
       this.props.propagateState({ menuOpen: false });
     };
+    const {t} = this.props;
     return (
       <div
         className="column-toggle__dropdown"
@@ -68,33 +68,39 @@ class ReactDataViewerMenu extends React.Component {
               <button className="btn btn-plain" onClick={buttonHandlers.FILTER}>
                 <i className="fa fa-filter ml-2 mr-4" />
                 <span className="font-weight-bold">
-                  <Trans>Custom Filter</Trans>
+                  <Trans t={t}>Custom Filter</Trans>
                 </span>
               </button>
             </span>
-            <div className="hoverable__content menu-description">{Descriptions.filter}</div>
+            <div className="hoverable__content menu-description">
+              <Trans t={t} ns="menu_description">filter</Trans>
+            </div>
           </li>
           <li className="hoverable">
             <span className="toggler-action">
               <button className="btn btn-plain" onClick={buttonHandlers.BUILD}>
                 <i className="ico-build" />
                 <span className="font-weight-bold">
-                  <Trans>Build Column</Trans>
+                  <Trans t={t}>Build Column</Trans>
                 </span>
               </button>
             </span>
-            <div className="hoverable__content menu-description">{Descriptions.build}</div>
+            <div className="hoverable__content menu-description">
+              <Trans t={t} ns="menu_description">build</Trans>
+            </div>
           </li>
           <li className="hoverable">
             <span className="toggler-action">
               <button className="btn btn-plain" onClick={openPopup("reshape", 400, 770)}>
                 <i className="fas fa-tools ml-2 mr-4" />
                 <span className="font-weight-bold">
-                  <Trans>Summarize Data</Trans>
+                  <Trans t={t}>Summarize Data</Trans>
                 </span>
               </button>
             </span>
-            <div className="hoverable__content menu-description">{Descriptions.reshape}</div>
+            <div className="hoverable__content menu-description">
+              <Trans t={t} ns="menu_description">reshape</Trans>
+            </div>
           </li>
           <DuplicatesOption open={buttonHandlers.DUPLICATES} />
           <li className="hoverable">
@@ -102,11 +108,13 @@ class ReactDataViewerMenu extends React.Component {
               <button className="btn btn-plain" onClick={openTab("correlations")}>
                 <i className="ico-bubble-chart" />
                 <span className="font-weight-bold">
-                  <Trans>Correlations</Trans>
+                  <Trans t={t}>Correlations</Trans>
                 </span>
               </button>
             </span>
-            <div className="hoverable__content menu-description">{Descriptions.corr}</div>
+            <div className="hoverable__content menu-description">
+              <Trans t={t} ns="menu_description">corr</Trans>
+            </div>
           </li>
           {(!pythonVersion || (pythonVersion[0] >= 3 && pythonVersion[1] >= 6)) && (
             <li className="hoverable">
@@ -114,11 +122,13 @@ class ReactDataViewerMenu extends React.Component {
                 <button className="btn btn-plain" onClick={openTab("pps")}>
                   <i className="ico-bubble-chart" />
                   <span className="font-weight-bold">
-                    <Trans>Predictive Power Score</Trans>
+                    <Trans t={t}>Predictive Power Score</Trans>
                   </span>
                 </button>
               </span>
-              <div className="hoverable__content menu-description">{Descriptions.pps}</div>
+              <div className="hoverable__content menu-description">
+                <Trans t={t} ns="menu_description">pps</Trans>
+              </div>
             </li>
           )}
           <li className="hoverable">
@@ -126,11 +136,13 @@ class ReactDataViewerMenu extends React.Component {
               <button className="btn btn-plain" onClick={buttonHandlers.CHARTS}>
                 <i className="ico-show-chart" />
                 <span className="font-weight-bold">
-                  <Trans>Charts</Trans>
+                  <Trans t={t}>Charts</Trans>
                 </span>
               </button>
             </span>
-            <div className="hoverable__content menu-description">{Descriptions.charts}</div>
+            <div className="hoverable__content menu-description">
+              <Trans t={t} ns="menu_description">charts</Trans>
+            </div>
           </li>
           <HeatMapOption backgroundMode={backgroundMode} toggleBackground={toggleBackground} />
           <li className="hoverable">
@@ -139,12 +151,14 @@ class ReactDataViewerMenu extends React.Component {
                 <div style={{ display: "inherit" }}>
                   <div className={`bg-icon dtype-bg${backgroundMode === "dtypes" ? " spin" : ""}`} />
                   <span className="font-weight-bold pl-4">
-                    <Trans>Highlight Dtypes</Trans>
+                    <Trans t={t}>Highlight Dtypes</Trans>
                   </span>
                 </div>
               </button>
             </span>
-            <div className="hoverable__content menu-description">{Descriptions.highlight_dtypes}</div>
+            <div className="hoverable__content menu-description">
+              <Trans t={t} ns="menu_description">highlight_dtypes</Trans>
+            </div>
           </li>
           <li className="hoverable">
             <span className="toggler-action">
@@ -152,12 +166,14 @@ class ReactDataViewerMenu extends React.Component {
                 <div style={{ display: "inherit" }}>
                   <div className={`bg-icon missing-bg${backgroundMode === "missing" ? " spin" : ""}`} />
                   <span className="font-weight-bold pl-4">
-                    <Trans>Highlight Missing</Trans>
+                    <Trans t={t}>Highlight Missing</Trans>
                   </span>
                 </div>
               </button>
             </span>
-            <div className="hoverable__content menu-description">{Descriptions.highlight_missings}</div>
+            <div className="hoverable__content menu-description">
+              <Trans t={t} ns="menu_description">highlight_missings</Trans>
+            </div>
           </li>
           <li className="hoverable">
             <span className="toggler-action">
@@ -165,12 +181,14 @@ class ReactDataViewerMenu extends React.Component {
                 <div style={{ display: "inherit" }}>
                   <div className={`bg-icon outliers-bg${backgroundMode === "outliers" ? " spin" : ""}`} />
                   <span className="font-weight-bold pl-4">
-                    <Trans>Highlight Outliers</Trans>
+                    <Trans t={t}>Highlight Outliers</Trans>
                   </span>
                 </div>
               </button>
             </span>
-            <div className="hoverable__content menu-description">{Descriptions.highlight_outliers}</div>
+            <div className="hoverable__content menu-description">
+              <Trans t={t} ns="menu_description">highlight_outliers</Trans>
+            </div>
           </li>
           <RangeHighlightOption {...this.props} />
           <LowVarianceOption
@@ -183,18 +201,20 @@ class ReactDataViewerMenu extends React.Component {
               <button className="btn btn-plain" onClick={buttonHandlers.CODE}>
                 <i className="ico-code" />
                 <span className="font-weight-bold">
-                  <Trans>Code Export</Trans>
+                  <Trans t={t}>Code Export</Trans>
                 </span>
               </button>
             </span>
-            <div className="hoverable__content menu-description">{Descriptions.code}</div>
+            <div className="hoverable__content menu-description">
+              <Trans t={t} ns="menu_description">code</Trans>
+            </div>
           </li>
           <li className="hoverable" style={{ color: "#565b68" }}>
             <span className="toggler-action">
               <i className="far fa-file" />
             </span>
             <span className="font-weight-bold pl-2">
-              <Trans>Export</Trans>
+              <Trans t={t}>Export</Trans>
             </span>
             <div className="btn-group compact ml-auto mr-3 font-weight-bold column-sorting">
               {_.map(
@@ -213,7 +233,9 @@ class ReactDataViewerMenu extends React.Component {
                 )
               )}
             </div>
-            <div className="hoverable__content menu-description">{Descriptions.export}</div>
+            <div className="hoverable__content menu-description">
+              <Trans t={t} ns="menu_description">export</Trans>
+            </div>
           </li>
           <UploadOption open={openPopup("upload", 450)} />
           <li className="hoverable">
@@ -221,11 +243,13 @@ class ReactDataViewerMenu extends React.Component {
               <button className="btn btn-plain" onClick={refreshWidths}>
                 <i className="fas fa-columns ml-2 mr-4" />
                 <span className="font-weight-bold">
-                  <Trans>Refresh Widths</Trans>
+                  <Trans t={t}>Refresh Widths</Trans>
                 </span>
               </button>
             </span>
-            <div className="hoverable__content menu-description">{Descriptions.widths}</div>
+            <div className="hoverable__content menu-description">
+              <Trans t={t} ns="menu_description">widths</Trans>
+            </div>
           </li>
           <li className="hoverable">
             <span className="toggler-action">
@@ -240,11 +264,13 @@ class ReactDataViewerMenu extends React.Component {
                 }>
                 <i className="fa fa-info-circle la-lg mr-4 ml-1" />
                 <span className="font-weight-bold">
-                  <Trans>About</Trans>
+                  <Trans t={t}>About</Trans>
                 </span>
               </button>
             </span>
-            <div className="hoverable__content menu-description">{Descriptions.about}</div>
+            <div className="hoverable__content menu-description">
+              <Trans t={t} ns="menu_description">about</Trans>
+            </div>
           </li>
           <ThemeOption />
           <li>
@@ -252,7 +278,7 @@ class ReactDataViewerMenu extends React.Component {
               <button className="btn btn-plain" onClick={() => window.location.reload()}>
                 <i className="ico-sync" />
                 <span className="font-weight-bold">
-                  <Trans>Reload Data</Trans>
+                  <Trans t={t}>Reload Data</Trans>
                 </span>
               </button>
             </span>
@@ -263,7 +289,7 @@ class ReactDataViewerMenu extends React.Component {
                 <button className="btn btn-plain" onClick={() => window.open(window.location.pathname, "_blank")}>
                   <i className="ico-open-in-new" />
                   <span className="font-weight-bold">
-                    <Trans>Open In New Tab</Trans>
+                    <Trans t={t}>Open In New Tab</Trans>
                   </span>
                 </button>
               </span>
@@ -275,11 +301,13 @@ class ReactDataViewerMenu extends React.Component {
                 <a className="btn btn-plain" href="/shutdown">
                   <i className="fa fa-power-off ml-2 mr-4" />
                   <span className="font-weight-bold">
-                    <Trans>Shutdown</Trans>
+                    <Trans t={t}>Shutdown</Trans>
                   </span>
                 </a>
               </span>
-              <div className="hoverable__content menu-description">{Descriptions.shutdown}</div>
+              <div className="hoverable__content menu-description">
+                <Trans t={t} ns="menu_description">shutdown</Trans>
+              </div>
             </li>
           </ConditionalRender>
         </ul>
@@ -305,4 +333,5 @@ const ReduxDataViewerMenu = connect(
   dispatch => ({ openChart: chartProps => dispatch(openChart(chartProps)) })
 )(ReactDataViewerMenu);
 
-export { ReduxDataViewerMenu as DataViewerMenu, ReactDataViewerMenu };
+export default withTranslation("menu")(ReactDataViewerMenu);
+export const DataViewerMenu = withTranslation("menu")(ReduxDataViewerMenu);
