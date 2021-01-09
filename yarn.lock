@@ -4494,13 +4494,6 @@ highlight.js@10.4.1, highlight.js@^10.4.1, highlight.js@~10.4.0:
   resolved "https://registry.yarnpkg.com/highlight.js/-/highlight.js-10.4.1.tgz#d48fbcf4a9971c4361b3f95f302747afe19dbad0"
   integrity sha512-yR5lWvNz7c85OhVAEAeFhVCc/GV4C30Fjzc/rCP0aCWzc1UUOPUk55dK/qdwTZHBvMZo+eZ2jpk62ndX/xMFlg==
 
-hoist-non-react-statics@3.3.0:
-  version "3.3.0"
-  resolved "https://registry.yarnpkg.com/hoist-non-react-statics/-/hoist-non-react-statics-3.3.0.tgz#b09178f0122184fb95acf525daaecb4d8f45958b"
-  integrity sha512-0XsbTXxgiaCDYDIWFcwkmerZPSwywfUqYmwT4jzewKTQSWoE6FCMoUVOeBJWK3E/CrWbxRG3m5GzY4lnIwGRBA==
-  dependencies:
-    react-is "^16.7.0"
-
 hoist-non-react-statics@^3.0.0, hoist-non-react-statics@^3.3.2:
   version "3.3.2"
   resolved "https://registry.yarnpkg.com/hoist-non-react-statics/-/hoist-non-react-statics-3.3.2.tgz#ece0acaf71d62c2969c2ec59feff42a4b1a85b45"
@@ -7150,13 +7143,12 @@ react-hotkeys@2.0.0:
   dependencies:
     prop-types "^15.6.1"
 
-react-i18next@10.0.0:
-  version "10.0.0"
-  resolved "https://registry.yarnpkg.com/react-i18next/-/react-i18next-10.0.0.tgz#fa93126cc0de574a67f8ce86c0dba4483e978271"
-  integrity sha512-zMAbKpWjCLlMaWB88fekiYmJ7pZWvLdp3IpQqk78yh2/IMCRzGxa5ig2cVk/zwz6YeckMSZgeKFV9Bd+VaSn8Q==
+react-i18next@10.7.0:
+  version "10.7.0"
+  resolved "https://registry.yarnpkg.com/react-i18next/-/react-i18next-10.7.0.tgz#58013086d552429307b3cb557e45fbd1a3dabcb7"
+  integrity sha512-tkz0u9p+GeCUelTgn14mDP6ZgzvTNwdYQ1pCL5dnRzf8j28id00GwNrYY/Z67QmV/MbZ88Ejjh8uy5Gfdz7Drg==
   dependencies:
     "@babel/runtime" "^7.3.1"
-    hoist-non-react-statics "3.3.0"
     html-parse-stringify2 "2.0.1"
 
 react-input-autosize@^2.2.2:
