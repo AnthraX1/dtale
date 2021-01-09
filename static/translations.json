@@ -25,7 +25,11 @@
       "Theme": "Theme",
       "Reload Data": "Reload Data",
       "Shutdown": "Shutdown",
-      "Duplicates": "Duplicates"
+      "Duplicates": "Duplicates",
+      "By Col": "By Col",
+      "Overall": "Overall",
+      "Light": "Light",
+      "Dark": "Dark"
     },
     "menu_description": {
       "describe": "Describe column's values (Top unique values, Min, Max, Sum, STD, Var,...)",
@@ -54,7 +58,19 @@
       "low_variance_1": "Show flags on column headers where both these conditions are true:",
       "low_variance_2": "Count of unique values / column size < 10%",
       "low_variance_3": "Count of most common value / Count of second most common value > 20",
-      "low_variance_4": "You can view variance information by clicking the \"Variance\" option in the column menu."
+      "low_variance_4": "You can view variance information by clicking the \"Variance\" option in the column menu.",
+      "xarray_dim_des": "View individual xarray dimensions. You are currently viewing:",
+      "ALL DATA": "ALL DATA"
+    },
+    "popup": {
+      "Yes/No": "Yes/No",
+      " Variance Report for ": " Variance Report for ",
+      " Column Analysis for ": " Column Analysis for ",
+      " Type Conversion of ": " Type Conversion of ",
+      " Clean ": " Clean ",
+      " Replacements for ": " Replacements for ",
+      "Error": "Error",
+      "Active D-Tale Instances": "Active D-Tale Instances"
     }
   },
   "cn": {
@@ -83,7 +99,11 @@
       "Theme": "主题",
       "Reload Data": "重新加载数据",
       "Shutdown": "关闭",
-      "Duplicates": "重复项"
+      "Duplicates": "重复项",
+      "By Col": "根据列",
+      "Overall": "总体",
+      "Light": "浅色",
+      "Dark": "深色"
     },
     "menu_description": {
       "describe": "描述每列的值（最上面的唯一值，最小值，最大值，总和，STD，变量，...）。",
@@ -112,7 +132,19 @@
       "low_variance_1": "在满足以下两个条件的情况下，在列标题上显示标志：。",
       "low_variance_2": "唯一值/唯一列数量<10％。",
       "low_variance_3": "最常用值计数/次常用值计数>20。",
-      "low_variance_4": "您可以通过单击列菜单中的“差异”选项来查看差异信息。"
+      "low_variance_4": "您可以通过单击列菜单中的“差异”选项来查看差异信息。",
+      "xarray_dim_des": "查看各个xarray尺寸。您当前正在查看：",
+      "ALL DATA": "所有数据"
+    },
+    "popup": {
+      "Yes/No": "是/否",
+      " Variance Report for ": " 差异报告 ",
+      " Column Analysis for ": " 列分析 ",
+      " Type Conversion of ": " 类型转换 ",
+      " Clean ": " 清除 ",
+      " Replacements for ": " 替换为 ",
+      "Error": "错误",
+      "Active D-Tale Instances": "活跃的D-Tale实例"
     }
   }
 }

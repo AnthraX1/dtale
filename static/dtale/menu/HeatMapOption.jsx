@@ -23,8 +23,8 @@ class HeatMapOption extends React.Component {
         <div className="btn-group compact ml-auto mr-3 font-weight-bold column-sorting" style={{ fontSize: "75%" }}>
           {_.map(
             [
-              ["By Col", "heatmap-col"],
-              ["Overall", "heatmap-all"],
+              [t('menu:By Col'), "heatmap-col"],
+              [t('menu:Overall'), "heatmap-all"],
             ],
             ([label, mode]) => (
               <button

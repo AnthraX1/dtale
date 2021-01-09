@@ -6,16 +6,14 @@ import { connect } from "react-redux";
 import { openChart } from "../../actions/charts";
 import { Trans, withTranslation } from "react-i18next";
 
-const DESCRIPTION = "View individual xarray dimensions. You are currently viewing:";
-
-function renderDimensionSelection(dimensionSelection) {
+function renderDimensionSelection(dimensionSelection, t) {
   if (_.size(dimensionSelection)) {
     return _.join(
       _.map(dimensionSelection, (val, prop) => `${val} (${prop})`),
       ", "
     );
   }
-  return "ALL DATA";
+  return t("menu_description:ALL DATA");
 }
 
 class ReactXArrayOption extends React.Component {
@@ -38,7 +36,7 @@ class ReactXArrayOption extends React.Component {
             </button>
           </span>
           <div className="hoverable__content menu-description">
-            {`${DESCRIPTION} ${renderDimensionSelection(this.props.xarrayDim)}`}
+            {`${t('menu_description:xarray_dim_des')} ${renderDimensionSelection(this.props.xarrayDim, this.props.t)}`}
           </div>
         </li>
       );

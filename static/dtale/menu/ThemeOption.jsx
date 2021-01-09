@@ -31,7 +31,7 @@ class ReactThemeOption extends React.Component {
               style={{ color: "#565b68" }}
               className={`btn btn-primary ${value === theme ? "active" : ""} font-weight-bold`}
               onClick={value === theme ? _.noop : updateTheme(value)}>
-              {_.capitalize(value)}
+              {t(_.capitalize(value))}
             </button>
           ))}
         </div>
