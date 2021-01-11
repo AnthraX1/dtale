@@ -5,6 +5,7 @@ import Column from "react-virtualized/dist/commonjs/Table/Column";
 import Table from "react-virtualized/dist/commonjs/Table/Table";
 
 import { exports as gu } from "../dtale/gridUtils";
+import { Trans, withTranslation } from "react-i18next";
 
 require("./ContextVariables.css");
 
@@ -21,15 +22,14 @@ class ContextVariables extends React.Component {
   }
 
   renderInfoForUser() {
+    const {t} = this.props;
     return (
       <div>
-        <h3>Context Variables</h3>
+        <h3>
+          <Trans t={t}>Context Variables</Trans>
+        </h3>
         <p>
-          These are initialized via the <var>context_vars</var> argument to dtale.show(), ex:
-          <span className="font-weight-bold"> dtale.show(df, context_vars={"{'foo': [1, 2, 3]}"})</span>
-          <br />
-          They can be referenced in filters by prefixing the variable name with {"'@'"}, ex:
-          <span className="font-weight-bold"> Col in @foo </span>to only show rows where {"'Col'"} is in list {"'foo'"}
+          <Trans t={t}>context_variables_des</Trans>
         </p>
       </div>
     );
@@ -37,7 +37,7 @@ class ContextVariables extends React.Component {
 
   renderTable() {
     if (this.props.contextVars.length === 0) {
-      return <p>No context variables are defined.</p>;
+      return <p><Trans t={this.props.t}>No context variables are defined.</Trans></p>;
     }
     return (
       <div>
@@ -75,4 +75,4 @@ class ContextVariables extends React.Component {
 ContextVariables.displayName = displayName;
 ContextVariables.propTypes = propTypes;
 
-export default ContextVariables;
+export default withTranslation("filter_page")(ContextVariables);
