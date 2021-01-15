@@ -2,8 +2,9 @@ import _ from "lodash";
 import PropTypes from "prop-types";
 import React from "react";
 import Select, { createFilter } from "react-select";
+import { Trans, withTranslation} from "react-i18next";
 
-export default class Keep extends React.Component {
+class Keep extends React.Component {
   constructor(props) {
     super(props);
     this.state = { value: { value: props.value || "first" } };
@@ -15,9 +16,12 @@ export default class Keep extends React.Component {
   }
 
   render() {
+    const {t} = this.props;
     return (
       <div className="form-group row">
-        <label className="col-md-3 col-form-label text-right">Keep</label>
+        <label className="col-md-3 col-form-label text-right">
+          <Trans t={t}>Keep</Trans>
+        </label>
         <div className="col-md-8">
           <Select
             className="Select is-clearable is-searchable Select--single"
@@ -43,3 +47,5 @@ Keep.propTypes = {
   value: PropTypes.string,
   updateState: PropTypes.func,
 };
+
+export default withTranslation("duplicate")(Keep);

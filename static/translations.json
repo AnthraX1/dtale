@@ -232,7 +232,8 @@
       "Title": "Title",
       "Drop Repeated Words": "Drop Repeated Words",
       "Update Word Case": "Update Word Case",
-      "Function(s)": "Function(s)"
+      "Function(s)": "Function(s)",
+      "Column(s)": "Column(s)"
     },
     "cleaning_descriptions": {
       "drop_multispace": "Replace sequences of multiple spaces in the rows i.e. \"Foo    Bar\" > \"Foo Bar\"",
@@ -271,6 +272,19 @@
       "Execute": "Execute",
       "Index": "Index",
       "Column(s)": "Column(s)"
+    },
+    "duplicate":{
+      "Operation": "Operation",
+      "View Duplicates": "View Duplicates",
+      "Execute": "Execute",
+      "Remove\nDuplicate Columns": "Remove\nDuplicate Columns",
+      "Remove Duplicate\nColumn Names": "Remove Duplicate\nColumn Names",
+      "Remove\nDuplicate Rows": "Remove\nDuplicate Rows",
+      "Show\nDuplicates": "Show\nDuplicates",
+      "Remove columns that contain the same data.": "Remove columns that contain the same data.",
+      "Remove columns with the same name (case-insensitive)": "Remove columns with the same name (case-insensitive)",
+      "Remove duplicate rows based on a subset of columns.": "Remove duplicate rows based on a subset of columns.",
+      "Show all duplicates data or duplicate data for a specific value.": "Show all duplicates data or duplicate data for a specific value."
     }
   },
   "cn": {
@@ -507,7 +521,8 @@
       "Title": "标题",
       "Drop Repeated Words": "丢掉重复的单词",
       "Update Word Case": "更新词条",
-      "Function(s)": "方程式"
+      "Function(s)": "方程式",
+      "Column(s)": "列"
     },
     "cleaning_descriptions": {
       "drop_multispace": "替换行中多个空格的序列，即 \"foo bar\">\"foo bar\"",
@@ -546,6 +561,20 @@
       "Execute": "执行",
       "Index": "索引",
       "Column(s)": "列"
+    },
+    "duplicate":{
+      "Operation": "操作",
+      "View Duplicates": "查看重复",
+      "Execute": "执行",
+      "Keep": "留下",
+      "Remove\nDuplicate Columns": "移除\n重复列",
+      "Remove Duplicate\nColumn Names": "移除\n重复的列名",
+      "Remove\nDuplicate Rows": "移除\n重复的行",
+      "Show\nDuplicates": "显示\n重复品",
+      "Remove columns that contain the same data.": "删除包含相同数据的列。",
+      "Remove columns with the same name (case-insensitive)": "删除同名列（不区分大小写）。",
+      "Remove duplicate rows based on a subset of columns.": "根据列的子集删除重复的行。",
+      "Show all duplicates data or duplicate data for a specific value.": "显示所有重复数据或特定值的重复数据。"
     }
   }
 }

@@ -7,6 +7,7 @@ import { RemovableError } from "../../RemovableError";
 import { buildURLString } from "../../actions/url-utils";
 import { fetchJson } from "../../fetcher";
 import Keep from "./Keep";
+import { Trans, withTranslation } from "react-i18next";
 
 function validateColumnNamesCfg(_cfg) {
   return null;
@@ -64,6 +65,7 @@ class ColumnNames extends React.Component {
   }
 
   render() {
+    const {t} = this.props;
     return (
       <React.Fragment>
         <Keep value={this.state.keep} updateState={this.updateState} />
@@ -71,7 +73,7 @@ class ColumnNames extends React.Component {
           <div className="col-md-3" />
           <div className="col-md-8">
             <button className="col-auto btn btn-secondary" onClick={this.test}>
-              {"View Duplicates"}
+              <Trans t={t}>{"View Duplicates"}</Trans>
             </button>
           </div>
         </div>
@@ -94,4 +96,5 @@ ColumnNames.propTypes = {
   columns: PropTypes.array,
 };
 
+ColumnNames = withTranslation("duplicate")(ColumnNames)
 export { ColumnNames, validateColumnNamesCfg };

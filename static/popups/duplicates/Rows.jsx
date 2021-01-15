@@ -8,6 +8,7 @@ import { buildURLString } from "../../actions/url-utils";
 import { fetchJson } from "../../fetcher";
 import ColumnSelect from "../create/ColumnSelect";
 import Keep from "./Keep";
+import { Trans, withTranslation } from "react-i18next";
 
 function validateRowsCfg(cfg) {
   const { subset } = cfg;
@@ -82,6 +83,7 @@ class Rows extends React.Component {
   }
 
   render() {
+    const {t} = this.props;
     return (
       <React.Fragment>
         <Keep value={this.state.keep} updateState={this.updateState} />
@@ -97,7 +99,7 @@ class Rows extends React.Component {
           <div className="col-md-3" />
           <div className="col-md-8">
             <button className="col-auto btn btn-secondary" onClick={this.test}>
-              {"View Duplicates"}
+              <Trans t={t}>{"View Duplicates"}</Trans>
             </button>
           </div>
         </div>
@@ -121,4 +123,5 @@ Rows.propTypes = {
   selectedCol: PropTypes.string,
 };
 
+Rows = withTranslation("duplicate")(Rows);
 export { Rows, validateRowsCfg };
