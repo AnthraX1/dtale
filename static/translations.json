@@ -248,6 +248,29 @@
       "drop_repeated_chars": "Removes characters which are repeated within a value i.e. \"BBerlin\" > \"Berlin\"",
       "hidden_chars": "Removes characters that cannot be printed to your screen using string.printable",
       "replace_hyphen_w_space": "Replaces any hyphens (unicode or otherwise) with a space"
+    },
+    "reshape": {
+      "New Instance": "New Instance",
+      "Override Current": "Override Current",
+      "Output": "Output",
+      "GroupBy": "GroupBy",
+      "Pivot": "Pivot",
+      "Transpose": "Transpose",
+      "Operation": "Operation",
+      "Include Column Names in Headers?": "Include Column Names in Headers?",
+      "Columns": "Columns",
+      "Rows": "Rows",
+      "Value(s)": "Value(s)",
+      "Aggregation": "Aggregation",
+      "Column(s) to GroupBy": "Column(s) to GroupBy",
+      "By Column": "By Column",
+      "By Function": "By Function",
+      "Func": "Func",
+      "Cols": "Cols",
+      "Agg": "Agg",
+      "Execute": "Execute",
+      "Index": "Index",
+      "Column(s)": "Column(s)"
     }
   },
   "cn": {
@@ -500,6 +523,29 @@
       "drop_repeated_chars": "删除值中重复的字符，例如 \"BBerlin\">\"Berlin\"。",
       "hidden_chars": "删除那些无法使用string.printable打印到屏幕的字符。",
       "replace_hyphen_w_space": "用空格代替任何连字符（unicode或其他）。"
+    },
+    "reshape": {
+      "New Instance": "新实例",
+      "Override Current": "覆盖当前",
+      "Output": "输出",
+      "GroupBy": "按组",
+      "Pivot": "Pivot",
+      "Transpose": "Transpose",
+      "Operation": "运作",
+      "Include Column Names in Headers?": "在标题中包含列名？",
+      "Columns": "列",
+      "Rows": "行",
+      "Value(s)": "值",
+      "Aggregation": "集合",
+      "Column(s) to GroupBy": "GroupBy的列",
+      "By Column": "按列",
+      "By Function": "按方程分类",
+      "Func": "方程",
+      "Cols": "列",
+      "Agg": "汇总",
+      "Execute": "执行",
+      "Index": "索引",
+      "Column(s)": "列"
     }
   }
 }

@@ -146,7 +146,9 @@ class Aggregate extends React.Component {
             </div>
             <div className="col-md-7 pl-0">
               <div className="input-group">
-                <span className="pt-4 mr-4">Agg:</span>
+                <span className="pt-4 mr-4">
+                  <Trans t={t}>Agg</Trans>:
+                </span>
                 <Select
                   ref={r => (this._curr_agg_func = r)}
                   className="Select is-clearable is-searchable Select--single"
@@ -188,7 +190,9 @@ class Aggregate extends React.Component {
         <div key={0} className="row pb-4">
           <div className="col-auto pr-2">
             <div className="input-group mr-3 col-agg-col-input">
-              <span className="mt-auto mb-auto mr-4">Func:</span>
+              <span className="mt-auto mb-auto mr-4">
+                <Trans t={t}>Func</Trans>:
+              </span>
               <Select
                 className="Select is-clearable is-searchable Select--single"
                 classNamePrefix="Select"
@@ -208,7 +212,9 @@ class Aggregate extends React.Component {
           </div>
           <div className="col pl-0">
             <div className="input-group">
-              <span className="mt-auto mb-auto mr-4">Cols:</span>
+              <span className="mt-auto mb-auto mr-4">
+                <Trans t={t}>Cols</Trans>:
+              </span>
               {this.renderSelect("columns", "index", true)}
             </div>
           </div>
@@ -237,7 +243,7 @@ class Aggregate extends React.Component {
                 }
                 return (
                   <button key={`agg-${val}`} {...buttonProps}>
-                    {label}
+                    <Trans t={t}>{label}</Trans>
                   </button>
                 );
               }
@@ -252,7 +258,9 @@ class Aggregate extends React.Component {
   render() {
     return [
       <div key={0} className="form-group row">
-        <label className="col-md-3 col-form-label text-right">Column(s) to GroupBy</label>
+        <label className="col-md-3 col-form-label text-right">
+          <Trans t={t}>Column(s) to GroupBy</Trans>
+        </label>
         <div className="col-md-8">
           <div className="input-group">{this.renderSelect("index", ["columns"], true)}</div>
         </div>
