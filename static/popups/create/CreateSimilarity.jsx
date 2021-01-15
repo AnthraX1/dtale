@@ -4,6 +4,7 @@ import React from "react";
 import Select, { createFilter } from "react-select";
 
 import ColumnSelect from "./ColumnSelect";
+import { Trans, withTranslation } from "react-i18next";
 
 const ALGOS = [
   { value: "levenshtein", label: "Levenshtein" },
@@ -102,10 +103,13 @@ class CreateSimilarity extends React.Component {
   }
 
   render() {
+    const {t} = this.props;
     return (
       <React.Fragment>
         <div className="form-group row">
-          <label className="col-md-3 col-form-label text-right">Aggregation</label>
+          <label className="col-md-3 col-form-label text-right">
+            <Trans t={t}>Aggregation</Trans>
+          </label>
           <div className="col-md-8">
             <div className="input-group">
               <Select
@@ -142,7 +146,9 @@ class CreateSimilarity extends React.Component {
         />
         {_.get(this.state, "algo.value") !== "jaro-winkler" && (
           <div className="form-group row">
-            <label className="col-md-3 col-form-label text-right">Normalized</label>
+            <label className="col-md-3 col-form-label text-right">
+              <Trans t={t}>Normalized</Trans>
+            </label>
             <div className="col-md-8 mt-auto mb-auto">
               <i
                 className={`ico-check-box${this.state.normalized ? "" : "-outline-blank"} pointer`}
@@ -175,4 +181,5 @@ CreateSimilarity.propTypes = {
   namePopulated: PropTypes.bool,
 };
 
+CreateSimilarity = withTranslation("column_menu")(CreateSimilarity)
 export { CreateSimilarity, validateSimilarityCfg, buildCode };

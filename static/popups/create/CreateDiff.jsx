@@ -3,6 +3,7 @@ import PropTypes from "prop-types";
 import React from "react";
 
 import ColumnSelect from "./ColumnSelect";
+import { Trans, withTranslation } from "react-i18next";
 
 function validateDiffCfg({ col, periods }) {
   if (!col) {
@@ -48,6 +49,7 @@ class CreateDiff extends React.Component {
   }
 
   render() {
+    const {t} = this.props;
     return (
       <React.Fragment>
         <ColumnSelect
@@ -59,7 +61,9 @@ class CreateDiff extends React.Component {
           dtypes={["int", "float"]}
         />
         <div className="form-group row">
-          <label className="col-md-3 col-form-label text-right">Periods</label>
+          <label className="col-md-3 col-form-label text-right">
+            <Trans t={t}>Periods</Trans>
+          </label>
           <div className="col-md-8">
             <input
               className="form-control"
@@ -79,4 +83,5 @@ CreateDiff.propTypes = {
   namePopulated: PropTypes.bool,
 };
 
+CreateDiff = withTranslation("column_menu")(CreateDiff)
 export { CreateDiff, validateDiffCfg, buildCode };

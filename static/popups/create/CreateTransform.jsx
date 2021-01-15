@@ -5,6 +5,7 @@ import Select, { createFilter } from "react-select";
 
 import { AGGREGATION_OPTS } from "../analysis/filters/Constants";
 import ColumnSelect from "./ColumnSelect";
+import { withTranslation, Trans } from "react-i18next";
 
 function validateTransformCfg({ group, agg, col }) {
   if (!group) {
@@ -51,6 +52,7 @@ class CreateTransform extends React.Component {
   }
 
   render() {
+    const {t} = this.props;
     return (
       <React.Fragment>
         <ColumnSelect
@@ -72,7 +74,9 @@ class CreateTransform extends React.Component {
           dtypes={["int", "float"]}
         />
         <div className="form-group row">
-          <label className="col-md-3 col-form-label text-right">Aggregation</label>
+          <label className="col-md-3 col-form-label text-right">
+            <Trans t={t}>Aggregation</Trans>
+          </label>
           <div className="col-md-8">
             <div className="input-group">
               <Select
@@ -100,4 +104,5 @@ CreateTransform.propTypes = {
   namePopulated: PropTypes.bool,
 };
 
+CreateTransform = withTranslation("column_menu")(CreateTransform)
 export { CreateTransform, validateTransformCfg, buildCode };

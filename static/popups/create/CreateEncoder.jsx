@@ -4,6 +4,7 @@ import React from "react";
 import Select, { createFilter } from "react-select";
 
 import ColumnSelect from "./ColumnSelect";
+import { Trans, withTranslation } from "react-i18next";
 
 const ALGOS = [
   { value: "label", label: "LabelEncoder" },
@@ -85,10 +86,13 @@ class CreateEncoder extends React.Component {
   }
 
   render() {
+    const {t} = this.props;
     return (
       <React.Fragment>
         <div className="form-group row">
-          <label className="col-md-3 col-form-label text-right">Encoder</label>
+          <label className="col-md-3 col-form-label text-right">
+            <Trans t={t}>Encoder</Trans>
+          </label>
           <div className="col-md-8">
             <div className="input-group">
               <Select
@@ -137,4 +141,5 @@ CreateEncoder.propTypes = {
   namePopulated: PropTypes.bool,
 };
 
+CreateEncoder = withTranslation("column_menu")(CreateEncoder)
 export { CreateEncoder, validateEncoderCfg, buildCode };

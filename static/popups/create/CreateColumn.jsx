@@ -10,7 +10,7 @@ import { buildURLString, dtypesUrl } from "../../actions/url-utils";
 import { fetchJson } from "../../fetcher";
 import ColumnSaveType from "../replacement/ColumnSaveType";
 import * as createUtils from "./createUtils";
-import Descriptions from "./creation-descriptions.json";
+import { Trans, withTranslation } from "react-i18next";
 
 require("./CreateColumn.css");
 
@@ -93,11 +93,14 @@ class ReactCreateColumn extends React.Component {
       this.setState(state);
     };
     const body = createUtils.getBody(this.state, this.props, updateState);
+    const {t} = this.props;
     return (
       <div key="body" className="modal-body">
         {createUtils.renderNameInput(this.state) === "name" && (
           <div className="form-group row">
-            <label className="col-md-3 col-form-label text-right">Name</label>
+            <label className="col-md-3 col-form-label text-right">
+              <Trans t={t}>Name</Trans>
+            </label>
             <div className="col-md-8">
               <input
                 type="text"
@@ -118,7 +121,9 @@ class ReactCreateColumn extends React.Component {
         )}
         {!_.has(this.props, "prePopulated.type") && (
           <div className="form-group row">
-            <label className="col-md-3 col-form-label text-right">Column Type</label>
+            <label className="col-md-3 col-form-label text-right">
+              <Trans t={t}>Column Type</Trans>
+            </label>
             <div className="col-md-8 builders">
               <div className="row">
                 {_.map(createUtils.TYPES, (type, i) => {
@@ -142,13 +147,13 @@ class ReactCreateColumn extends React.Component {
                   }
                   return (
                     <div key={i} className="col-md-3 p-1">
-                      <button {...buttonProps}>{createUtils.buildLabel(type)}</button>
+                      <button {...buttonProps}>{createUtils.buildLabel(type, this.props.t)}</button>
                     </div>
                   );
                 })}
               </div>
               <label className="col-auto col-form-label pl-3 pr-3 row" style={{ fontSize: "85%" }}>
-                {_.get(Descriptions, this.state.type, "")}
+                <Trans t={t}>{this.state.type}</Trans>
               </label>
             </div>
           </div>
@@ -211,7 +216,9 @@ class ReactCreateColumn extends React.Component {
         {this.renderCode()}
         <button className="btn btn-primary" onClick={this.state.loadingColumn ? _.noop : this.save}>
           <BouncerWrapper showBouncer={this.state.loadingColumn}>
-            <span>{this.state.saveAs === "new" ? "Create" : "Apply"}</span>
+            <span>
+              <Trans t={this.props.t}>{this.state.saveAs === "new" ? "Create" : "Apply"}</Trans>
+            </span>
           </BouncerWrapper>
         </button>
       </div>,
@@ -232,4 +239,8 @@ const ReduxCreateColumn = connect(
   ({ dataId, chartData }) => ({ dataId, chartData }),
   dispatch => ({ onClose: chartData => dispatch(closeChart(chartData || {})) })
 )(ReactCreateColumn);
-export { ReactCreateColumn, ReduxCreateColumn as CreateColumn };
+
+ReactCreateColumn = withTranslation("column_menu")(ReactCreateColumn);
+const CreateColumn = withTranslation("column_menu")(ReduxCreateColumn);
+export { ReactCreateColumn, CreateColumn };
+

@@ -6,6 +6,7 @@ import React from "react";
 import { DateInput } from "@blueprintjs/datetime";
 
 import { buildRandomCode as buildCode } from "./codeSnippets";
+import { withTranslation, Trans } from "react-i18next";
 
 require("@blueprintjs/core/lib/css/blueprint.css");
 require("@blueprintjs/datetime/lib/css/blueprint-datetime.css");
@@ -86,9 +87,12 @@ class CreateRandom extends React.Component {
   }
 
   renderNumericInputs() {
+    const {t} = this.props;
     return [
       <div key={1} className="form-group row">
-        <label className="col-md-3 col-form-label text-right">Low</label>
+        <label className="col-md-3 col-form-label text-right">
+          <Trans t={t}>Low</Trans>
+        </label>
         <div className="col-md-8">
           <input
             type="number"
@@ -96,11 +100,15 @@ class CreateRandom extends React.Component {
             value={this.state.low || ""}
             onChange={e => this.updateState({ low: e.target.value })}
           />
-          <small>Default: 0</small>
+          <small>
+            <Trans t={t}>Default</Trans>: 0
+          </small>
         </div>
       </div>,
       <div key={2} className="form-group row">
-        <label className="col-md-3 col-form-label text-right">High</label>
+        <label className="col-md-3 col-form-label text-right">
+          <Trans t={t}>High</Trans>
+        </label>
         <div className="col-md-8">
           <input
             type="number"
@@ -108,16 +116,21 @@ class CreateRandom extends React.Component {
             value={this.state.high || ""}
             onChange={e => this.updateState({ high: e.target.value })}
           />
-          <small>{`Default: ${this.state.type === "float" ? "1" : "100"}`}</small>
+          <small>
+            <Trans t={t}>Default</Trans>: {`${this.state.type === "float" ? "1" : "100"}`}
+          </small>
         </div>
       </div>,
     ];
   }
 
   renderStringInputs() {
+    const {t} = this.props;
     return [
       <div key={1} className="form-group row">
-        <label className="col-md-3 col-form-label text-right">Length</label>
+        <label className="col-md-3 col-form-label text-right">
+          <Trans t={t}>Length</Trans>
+        </label>
         <div className="col-md-8">
           <input
             type="number"
@@ -125,11 +138,14 @@ class CreateRandom extends React.Component {
             value={this.state.length || ""}
             onChange={e => this.updateState({ length: e.target.value })}
           />
-          <small>Default: 10</small>
+          <small>
+            <Trans t={t}>Default</Trans>: 10</small>
         </div>
       </div>,
       <div key={2} className="form-group row">
-        <label className="col-md-3 col-form-label text-right">Chars</label>
+        <label className="col-md-3 col-form-label text-right">
+          <Trans t={t}>Chars</Trans>
+        </label>
         <div className="col-md-8">
           <input
             type="text"
@@ -144,9 +160,12 @@ class CreateRandom extends React.Component {
   }
 
   renderChoiceInputs() {
+    const {t} = this.props;
     return [
       <div key={1} className="form-group row">
-        <label className="col-md-3 col-form-label text-right">Choices</label>
+        <label className="col-md-3 col-form-label text-right">
+          <Trans t={t}>Choices</Trans>
+        </label>
         <div className="col-md-8">
           <input
             type="text"
@@ -173,9 +192,12 @@ class CreateRandom extends React.Component {
       maxDate: new Date(moment(maxDate)),
       showActionsBar: false,
     };
+    const {t} = this.props;
     return [
       <div key={1} className="form-group row mb-0">
-        <label className="col-md-3 col-form-label text-right">Range</label>
+        <label className="col-md-3 col-form-label text-right">
+          <Trans t={t}>Range</Trans>
+        </label>
         <div className="col-md-3">
           <DateInput
             value={_.isNull(start) ? null : new Date(moment(start))}
@@ -197,7 +219,9 @@ class CreateRandom extends React.Component {
         </div>
       </div>,
       <div key={2} className="form-group row mb-0">
-        <label className="col-md-3 col-form-label text-right">Business Dates</label>
+        <label className="col-md-3 col-form-label text-right">
+          <Trans t={t}>Business Dates</Trans>
+        </label>
         <div className="col-md-8 mt-auto mb-auto">
           <i
             className={`ico-check-box${this.state.businessDay ? "" : "-outline-blank"} pointer`}
@@ -206,7 +230,9 @@ class CreateRandom extends React.Component {
         </div>
       </div>,
       <div key={3} className="form-group row">
-        <label className="col-md-3 col-form-label text-right">Include Timestamps</label>
+        <label className="col-md-3 col-form-label text-right">
+          <Trans t={t}>Include Timestamps</Trans>
+        </label>
         <div className="col-md-8 mt-auto mb-auto">
           <i
             className={`ico-check-box${this.state.timestamps ? "" : "-outline-blank"} pointer`}
@@ -238,10 +264,13 @@ class CreateRandom extends React.Component {
         inputMarkup = null;
         break;
     }
+    const {t} = this.props;
     return _.concat(
       [
         <div key={0} className="form-group row">
-          <label className="col-md-3 col-form-label text-right">Data Type</label>
+          <label className="col-md-3 col-form-label text-right">
+            <Trans t={t}>Data Type</Trans>
+          </label>
           <div className="col-md-8">
             <div className="btn-group">
               {_.map(["float", "int", "string", "choice", "bool", "date"], randType => {
@@ -254,7 +283,7 @@ class CreateRandom extends React.Component {
                 }
                 return (
                   <button key={randType} {...buttonProps}>
-                    {_.capitalize(randType)}
+                    <Trans t={t}>{_.capitalize(randType)}</Trans>
                   </button>
                 );
               })}
@@ -273,4 +302,5 @@ CreateRandom.propTypes = {
   namePopulated: PropTypes.bool,
 };
 
+CreateRandom = withTranslation("column_menu")(CreateRandom)
 export { CreateRandom, validateRandomCfg, buildCode };

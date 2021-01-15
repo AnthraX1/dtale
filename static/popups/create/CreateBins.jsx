@@ -4,6 +4,7 @@ import React from "react";
 
 import { BinsTester } from "./BinsTester";
 import ColumnSelect from "./ColumnSelect";
+import { withTranslation, Trans } from "react-i18next";
 
 function validateBinsCfg(cfg) {
   const { col, bins, labels } = cfg;
@@ -65,6 +66,7 @@ class CreateBins extends React.Component {
 
   render() {
     const cfg = buildCfg(this.state);
+    const {t} = this.props;
     return (
       <div className="row">
         <div className="col-md-8 pr-0">
@@ -77,7 +79,9 @@ class CreateBins extends React.Component {
             dtypes={["int", "float"]}
           />
           <div key={1} className="form-group row">
-            <label className="col-md-3 col-form-label text-right">Operation</label>
+            <label className="col-md-3 col-form-label text-right">
+              <Trans t={t}>Operation</Trans>
+            </label>
             <div className="col-md-8">
               <div className="btn-group">
                 {_.map(
@@ -95,7 +99,7 @@ class CreateBins extends React.Component {
                     }
                     return (
                       <button key={operation} {...buttonProps}>
-                        {label}
+                        <Trans t={t}>{label}</Trans>
                       </button>
                     );
                   }
@@ -104,7 +108,9 @@ class CreateBins extends React.Component {
             </div>
           </div>
           <div key={2} className="form-group row">
-            <label className="col-md-3 col-form-label text-right">Bins</label>
+            <label className="col-md-3 col-form-label text-right">
+              <Trans t={t}>Bins</Trans>
+            </label>
             <div className="col-md-8">
               <input
                 type="number"
@@ -115,7 +121,9 @@ class CreateBins extends React.Component {
             </div>
           </div>
           <div key={3} className="form-group row">
-            <label className="col-md-3 col-form-label text-right">Labels</label>
+            <label className="col-md-3 col-form-label text-right">
+              <Trans t={t}>Labels</Trans>
+            </label>
             <div className="col-md-8">
               <input
                 type="text"
@@ -140,4 +148,5 @@ CreateBins.propTypes = {
   namePopulated: PropTypes.bool,
 };
 
+CreateBins = withTranslation("column_menu")(CreateBins);
 export { CreateBins, validateBinsCfg, buildCode };
