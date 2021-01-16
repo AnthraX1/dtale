@@ -9,6 +9,7 @@ import CategoryInputs from "./CategoryInputs";
 import { ANALYSIS_AGGS, TITLES } from "./Constants";
 import OrdinalInputs from "./OrdinalInputs";
 import TextEnterFilter from "./TextEnterFilter";
+import { Trans, withTranslation } from "react-i18next";
 
 function wrapFilterMarkup(filterMarkup) {
   return (
@@ -57,20 +58,21 @@ class DescribeFilters extends React.Component {
 
   buildChartTypeToggle() {
     const colType = gu.findColType(this.props.dtype);
-    const options = [{ label: TITLES.boxplot, value: "boxplot" }];
+    const {t} = this.props;
+    const options = [{ label: t(TITLES.boxplot), value: "boxplot" }];
     if (_.includes(["float", "int"], colType)) {
-      options.push({ label: TITLES.histogram, value: "histogram" });
+      options.push({ label: t(TITLES.histogram), value: "histogram" });
     }
     if (colType === "float") {
-      options.push({ label: TITLES.categories, value: "categories" });
+      options.push({ label: t(TITLES.categories), value: "categories" });
     } else if (colType == "string") {
       options.push({
-        label: TITLES.word_value_counts,
+        label: t(TITLES.word_value_counts),
         value: "word_value_counts",
       });
-      options.push({ label: TITLES.value_counts, value: "value_counts" });
+      options.push({ label: t(TITLES.value_counts), value: "value_counts" });
     } else {
-      options.push({ label: TITLES.value_counts, value: "value_counts" });
+      options.push({ label: t(TITLES.value_counts), value: "value_counts" });
     }
     const update = value => this.setState({ type: value }, this.buildChart);
     return <ButtonToggle options={options} update={update} defaultValue={this.state.type} />;
@@ -156,7 +158,7 @@ class DescribeFilters extends React.Component {
         <div className="form-group row small-gutters mb-5 mt-3">
           <div className="col p-0 type-toggle">{this.buildChartTypeToggle()}</div>
           <div className="col-auto">
-            <div>{renderCodePopupAnchor(code, TITLES[this.state.type])}</div>
+            <div>{renderCodePopupAnchor(code, TITLES[this.state.type], this.props.t)}</div>
           </div>
         </div>
         {filterMarkup}
@@ -176,4 +178,5 @@ DescribeFilters.propTypes = {
   details: PropTypes.object,
 };
 
+DescribeFilters = withTranslation("constants")(DescribeFilters);
 export { DescribeFilters };

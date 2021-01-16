@@ -5,6 +5,7 @@ import Select, { createFilter } from "react-select";
 
 import { exports as gu } from "../../dtale/gridUtils";
 import { AGGREGATION_OPTS, ROLLING_COMPS } from "../analysis/filters/Constants";
+import { Trans, withTranslation } from "react-i18next";
 
 function getAggregations({ columns, x, group }) {
   if (gu.isDateCol(gu.getDtype(_.get(x, "value"), columns)) && _.isEmpty(group)) {
@@ -30,12 +31,15 @@ class Aggregations extends React.Component {
   }
 
   renderRolling() {
+    const {t} = this.props;
     if (_.get(this.state, "aggregation.value") === "rolling") {
       const { rollingWindow, rollingComputation } = this.state;
       return [
         <div key={3} className="col-auto">
           <div className="input-group">
-            <span className="input-group-addon">Window</span>
+            <span className="input-group-addon">
+              <Trans t={t}>Window</Trans>
+            </span>
             <input
               style={{ width: "3em" }}
               className="form-control text-center"
@@ -52,12 +56,14 @@ class Aggregations extends React.Component {
         </div>,
         <div key={5} className="col-auto">
           <div className="input-group mr-3">
-            <span className="input-group-addon">Computation</span>
+            <span className="input-group-addon">
+              <Trans t={t}>Computation</Trans>
+            </span>
             <Select
               className="Select is-clearable is-searchable Select--single"
               classNamePrefix="Select"
               options={ROLLING_COMPS}
-              getOptionLabel={_.property("label")}
+              getOptionLabel={t("constants:"+_.property("label"))}
               getOptionValue={_.property("value")}
               value={rollingComputation}
               onChange={rollingComputation =>
@@ -78,7 +84,9 @@ class Aggregations extends React.Component {
     return [
       <div key={1} className="col-auto">
         <div className="input-group mr-3">
-          <span className="input-group-addon">Aggregation</span>
+          <span className="input-group-addon">
+            <Trans t={t}>Aggregation</Trans>
+          </span>
           <Select
             className="Select is-clearable is-searchable Select--single"
             classNamePrefix="Select"
@@ -105,4 +113,5 @@ Aggregations.propTypes = {
   aggregation: PropTypes.string, // eslint-disable-line react/no-unused-prop-types
 };
 
+Aggregations = withTranslation(["charts", "constants"])(Aggregations);
 export { Aggregations };

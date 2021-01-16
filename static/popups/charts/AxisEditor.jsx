@@ -3,6 +3,7 @@ import PropTypes from "prop-types";
 import React from "react";
 
 import menuUtils from "../../menuUtils";
+import { Trans, withTranslation } from "react-i18next";
 
 function buildState({ y, data }) {
   const state = {};
@@ -65,14 +66,16 @@ class AxisEditor extends React.Component {
       return null;
     }
     const { min, max } = this.props.data;
-    const { y } = this.props;
+    const { y, t } = this.props;
     const axisMarkup = _.map(y, ({ value }, idx) => {
       const minProp = `${value}-min`;
       const maxProp = `${value}-max`;
       return (
         <li key={idx}>
           <span className="mb-auto mt-auto font-weight-bold">{value}</span>
-          <span className="mb-auto mt-auto">Min:</span>
+          <span className="mb-auto mt-auto">
+            <Trans t={t}>Min</Trans>:
+          </span>
           <span>
             <input
               className="axis-input form-control input-sm"
@@ -81,7 +84,9 @@ class AxisEditor extends React.Component {
               onChange={e => this.setState({ [minProp]: e.target.value })}
             />
           </span>
-          <span className="mb-auto mt-auto">Max:</span>
+          <span className="mb-auto mt-auto">
+            <Trans t={t}>Max</Trans>:
+          </span>
           <span>
             <input
               className="axis-input form-control input-sm"
@@ -97,7 +102,9 @@ class AxisEditor extends React.Component {
     return (
       <div className="toolbar__axis">
         <div className="input-group">
-          <span className="input-group-addon">Axis Ranges</span>
+          <span className="input-group-addon">
+            <Trans t={t}>Axis Ranges</Trans>
+          </span>
           <div className="input-group column-toggle">
             <span className="form-control custom-select axis-select" onClick={menuHandler}>
               {_.truncate(
@@ -123,4 +130,4 @@ AxisEditor.propTypes = {
   updateAxis: PropTypes.func,
 };
 
-export default AxisEditor;
+export default withTranslation("charts")(AxisEditor);

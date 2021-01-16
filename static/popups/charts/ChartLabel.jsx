@@ -3,6 +3,7 @@ import PropTypes from "prop-types";
 import React from "react";
 
 import { AGGREGATION_OPTS, ROLLING_COMPS } from "../analysis/filters/Constants";
+import { Trans, withTranslation } from "react-i18next";
 
 function buildLabel({ x, y, group, aggregation, rollingWindow, rollingComputation }) {
   const yLabel = _.join(_.map(y, "value"), ", ");
@@ -38,7 +39,9 @@ class ChartLabel extends React.Component {
   render() {
     return (
       <div className="pt-5 pb-5 inline">
-        <b style={{ color: "black" }}>{this.state.label}</b>
+        <b style={{ color: "black" }}>
+          <Trans t={this.props.t}>{this.state.label}</Trans>
+        </b>
       </div>
     );
   }
@@ -52,4 +55,4 @@ ChartLabel.propTypes = {
   aggregation: PropTypes.string, // eslint-disable-line react/no-unused-prop-types
 };
 
-export default ChartLabel;
+export default withTranslation("constants")(ChartLabel);

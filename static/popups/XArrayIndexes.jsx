@@ -49,7 +49,9 @@ class ReactXArrayIndexes extends React.Component {
       <div key="body" className="modal-body">
         {this.state.error}
         <div className="form-group row">
-          <label className="col-md-3 col-form-label text-right">Index</label>
+          <label className="col-md-3 col-form-label text-right">
+            <Trans t={t}>Index</Trans>
+          </label>
           <div className="col-md-8">
             <div className="input-group">
               <Select

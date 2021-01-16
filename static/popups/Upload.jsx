@@ -12,6 +12,7 @@ import { buildURLString } from "../actions/url-utils";
 import menuFuncs from "../dtale/menu/dataViewerMenuUtils";
 import { fetchJson } from "../fetcher";
 import { buildForwardURL } from "./reshape/Reshape";
+import { Trans, withTranslation } from "react-i18next";
 
 require("./Upload.css");
 
@@ -114,9 +115,12 @@ class ReactUpload extends React.Component {
 
   render() {
     const { error, file, loading, loadingDataset, loadingURL } = this.state;
+    const {t} = this.props;
     return (
       <div key="body" className="modal-body">
-        <h3>Load File</h3>
+        <h3>
+          <Trans t={t}>Load File</Trans>
+        </h3>
         <div className="row">
           <div className="col-md-12">
             <Dropzone
@@ -147,13 +151,17 @@ class ReactUpload extends React.Component {
                     <div data-filetype=".csv" className="filepicker-file-icon"></div>
                     <div data-filetype=".tsv" className="filepicker-file-icon"></div>
                     <div className="dz-default dz-message">
-                      <span>Drop data files here to upload, or click to select files</span>
+                      <span>
+                        <Trans t={t}>Drop data files here to upload, or click to select files</Trans>
+                      </span>
                     </div>
                   </div>
                   <aside className="dropzone-aside">
                     {file && (
                       <React.Fragment>
-                        <h4>Loading File</h4>
+                        <h4>
+                          <Trans t={t}>Loading File</Trans>
+                        </h4>
                         <ul>
                           <li>{`${file.name} - ${file.size} bytes`}</li>
                           <li>{`Last Modified: ${file.lastModified}`}</li>
@@ -170,20 +178,24 @@ class ReactUpload extends React.Component {
         </div>
         <div className="row pt-5">
           <div className="col-auto">
-            <h3>Load From The Web</h3>
+            <h3>
+              <Trans t={t}>Load From The Web</Trans>
+            </h3>
           </div>
           <div className="col text-right">
             {this.state.urlDataType && this.state.url && (
               <BouncerWrapper showBouncer={loadingURL}>
                 <button className="btn btn-primary p-3" onClick={this.loadFromWeb}>
-                  Load
+                  <Trans t={t}>Load</Trans>
                 </button>
               </BouncerWrapper>
             )}
           </div>
         </div>
         <div className="form-group row">
-          <label className="col-md-3 col-form-label text-right">Data Type</label>
+          <label className="col-md-3 col-form-label text-right">
+            <Trans t={t}>Data Type</Trans>
+          </label>
           <div className="col-md-8 p-0">
             <div className="btn-group">
               {_.map(["csv", "tsv", "json"], urlDataType => {
@@ -204,7 +216,9 @@ class ReactUpload extends React.Component {
           </div>
         </div>
         <div className="form-group row">
-          <label className="col-md-3 col-form-label text-right">URL</label>
+          <label className="col-md-3 col-form-label text-right">
+            <Trans t={t}>URL</Trans>
+          </label>
           <div className="col-md-8 p-0">
             <input
               type="text"
@@ -216,8 +230,10 @@ class ReactUpload extends React.Component {
         </div>
         <div className="form-group row">
           <label className="col-md-3 col-form-label text-right">
-            {"Proxy"}
-            <small className="pl-3">(Optional)</small>
+            <Trans t={t}>{"Proxy"}</Trans>
+            <small className="pl-3">
+              <Trans t={t}>(Optional)</Trans>
+            </small>
           </label>
           <div className="col-md-8 p-0">
             <input
@@ -229,8 +245,12 @@ class ReactUpload extends React.Component {
           </div>
         </div>
         <div className="pb-5">
-          <h3 className="d-inline">Sample Datasets</h3>
-          <small className="pl-3 d-inline">(Requires access to web)</small>
+          <h3 className="d-inline">
+            <Trans t={t}>Sample Datasets</Trans>
+          </h3>
+          <small className="pl-3 d-inline">
+            <Trans t={t}>(Requires access to web)</Trans>
+          </small>
         </div>
         <div className="form-group row pl-5 pr-5">
           <div className="col-md-12 text-center">
@@ -276,4 +296,6 @@ ReactUpload.propTypes = {
 
 const ReduxUpload = connect(state => _.pick(state, ["chartData"]))(ReactUpload);
 
-export { ReactUpload, ReduxUpload as Upload };
+ReactUpload = withTranslation("upload")(ReactUpload);
+const Upload = withTranslation("upload")(ReduxUpload)
+export { ReactUpload, Upload };

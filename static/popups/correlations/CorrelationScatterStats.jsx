@@ -67,7 +67,7 @@ class CorrelationScatterStats extends React.Component {
           <dd>{stats.only_in_s1}</dd>
         </dl>
         <dl className="property-pair inline float-right">
-          {renderCodePopupAnchor(this.props.scatterCode, "Correlations Scatter")}
+          {renderCodePopupAnchor(this.props.scatterCode, "Correlations Scatter", this.props.t)}
         </dl>
       </div>,
       <div key={1} style={{ marginTop: "-.5em" }}>

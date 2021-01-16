@@ -6,6 +6,7 @@ import { exports as gu } from "../../../dtale/gridUtils";
 import { CLEANERS } from "../../create/CreateCleaning";
 import { AGGREGATION_OPTS } from "./Constants";
 import FilterSelect from "./FilterSelect";
+import { Trans, withTranslation } from "react-i18next";
 
 const ANALYSIS_AGGS = _.concat(AGGREGATION_OPTS, [{ value: "pctsum", label: "Percentage Sum" }]);
 const CLEANER_OPTS = _.concat(
@@ -32,12 +33,12 @@ class OrdinalInputs extends React.Component {
   }
 
   renderCleaners() {
-    const { type } = this.props;
+    const { type, t } = this.props;
     if (type === "word_value_counts" || type === "value_counts") {
       return (
         <div className="row pt-3" data-tip="Clean column of extraneous values">
           <div className="col-auto text-center pr-4 ml-auto mt-auto mb-auto">
-            <b>Cleaner</b>
+              <b><Trans t={t}>Cleaner</Trans></b>
           </div>
           <div className="col pl-0 mr-3 ordinal-dd cleaner-dd">
             <FilterSelect
@@ -58,7 +59,7 @@ class OrdinalInputs extends React.Component {
   }
 
   render() {
-    const { cols, selectedCol } = this.props;
+    const { cols, selectedCol, t } = this.props;
     let colOpts = _.filter(cols, c => c.name !== selectedCol && _.includes(["float", "int"], gu.findColType(c.dtype)));
     colOpts = _.sortBy(
       _.map(colOpts, c => ({ value: c.name })),
@@ -69,10 +70,10 @@ class OrdinalInputs extends React.Component {
         <div className="row">
           <div className="col-auto text-center pr-4">
             <div>
-              <b>Ordinal</b>
+                <b><Trans t={t}>Ordinal</Trans></b>
             </div>
             <div style={{ marginTop: "-.5em" }}>
-              <small>(Choose Col/Agg)</small>
+                <small><Trans t={t}>(Choose Col/Agg)</Trans></small>
             </div>
           </div>
           <div className="col-auto pl-0 mr-3 ordinal-dd">
@@ -110,4 +111,4 @@ OrdinalInputs.propTypes = {
   type: PropTypes.string,
 };
 
-export default OrdinalInputs;
+export default withTranslation("filters")(OrdinalInputs);

@@ -29,7 +29,9 @@
       "By Col": "By Col",
       "Overall": "Overall",
       "Light": "Light",
-      "Dark": "Dark"
+      "Dark": "Dark",
+      "Range Highlights": "Range Highlights",
+      "Index": "Index"
     },
     "menu_description": {
       "describe": "Describe column's values (Top unique values, Min, Max, Sum, STD, Var,...)",
@@ -285,6 +287,97 @@
       "Remove columns with the same name (case-insensitive)": "Remove columns with the same name (case-insensitive)",
       "Remove duplicate rows based on a subset of columns.": "Remove duplicate rows based on a subset of columns.",
       "Show all duplicates data or duplicate data for a specific value.": "Show all duplicates data or duplicate data for a specific value."
+    },
+    "charts": {
+      "Window": "Window",
+      "Computation": "Computation",
+      "Aggregation": "Aggregation",
+      "Min": "Min",
+      "Max": "Max",
+      "Axis Ranges": "Axis Ranges",
+      "Query": "Query",
+      "Load": "Load"
+    },
+    "rangeHighlights": {
+      "Apply To All Columns": "Apply To All Columns",
+      "Equals": "Equals",
+      "Greater Than": "Greater Than",
+      "Less Than": "Less Than",
+      "Apply": "Apply"
+    },
+    "instance":{
+      "Process": "Process",
+      "Rows": "Rows",
+      "Cols": "Cols",
+      "Column Names": "Column Names"
+    },
+    "code_export": {
+      "Code Export": "Code Export",
+      "Copy": "Copy"
+    },
+    "upload": {
+      "Load File": "Load File",
+      "URL": "URL",
+      "Drop data files here to upload, or click to select files": "Drop data files here to upload, or click to select files",
+      "Loading File": "Loading File",
+      "Load From The Web": "Load From The Web",
+      "Load": "Load",
+      "Data Type": "Data Type",
+      "Proxy": "Proxy",
+      "(Optional)": "(Optional)",
+      "Sample Datasets": "Sample Datasets",
+      "(Requires access to web)": "(Requires access to web)"
+    },
+    "about": {
+      "Your version is currently out of sync with PyPi.": "Your version is currently out of sync with PyPi.",
+      "Please upgrade.": "Please upgrade.",
+      "Your Version": "Your Version",
+      "PyPi Version": "PyPi Version"
+    },
+    "constants": {
+      "Histogram": "Histogram",
+      "Value Counts": "Value Counts",
+      "Describe": "Describe",
+      "Categories": "Categories",
+      "Word Value Counts": "Word Value Counts",
+      "Code Export": "Code Export",
+      "Correlation": "Correlation",
+      "Count": "Count",
+      "Covariance": "Covariance",
+      "Kurtosis": "Kurtosis",
+      "Maximum": "Maximum",
+      "Mean": "Mean",
+      "Median": "Median",
+      "Minimum": "Minimum",
+      "Skew": "Skew",
+      "Standard Deviation": "Standard Deviation",
+      "Sum": "Sum",
+      "Variance": "Variance",
+      "Unique Count": "Unique Count",
+      "Rolling": "Rolling",
+      "Keep First": "Keep First",
+      "Keep Last": "Keep Last",
+      "Mean Absolute Deviation": "Mean Absolute Deviation",
+      "Product of All Items": "Product of All Items"
+    },
+    "filters": {
+      "Ordinal": "Ordinal",
+      "Cleaner": "Cleaner",
+      "(Choose Col/Agg)": "(Choose Col/Agg)",
+      "(Please edit)": "(Please edit)",
+      "Top": "Top"
+    },
+    "describe": {
+      "Data Type": "Data Type",
+      "Column Name": "Column Name",
+      "Visible": "Visible",
+      "Update Grid": "Update Grid"
+    },
+    "variance": {
+      "Unique Values": "Unique Values",
+      "Sample Size": "Sample Size",
+      "Percentage": "Percentage",
+      "Percentage Missing": "Percentage Missing"
     }
   },
   "cn": {
@@ -317,7 +410,9 @@
       "By Col": "根据列",
       "Overall": "总体",
       "Light": "浅色",
-      "Dark": "深色"
+      "Dark": "深色",
+      "Range Highlights": "高亮显示范围",
+      "Index": "索引"
     },
     "menu_description": {
       "describe": "描述每列的值（最上面的唯一值，最小值，最大值，总和，STD，变量，...）。",
@@ -522,7 +617,8 @@
       "Drop Repeated Words": "丢掉重复的单词",
       "Update Word Case": "更新词条",
       "Function(s)": "方程式",
-      "Column(s)": "列"
+      "Column(s)": "列",
+      "Describe": "Describe"
     },
     "cleaning_descriptions": {
       "drop_multispace": "替换行中多个空格的序列，即 \"foo bar\">\"foo bar\"",
@@ -557,7 +653,8 @@
       "By Function": "按方程分类",
       "Func": "方程",
       "Cols": "列",
-      "Agg": "汇总",
+      "Col": "列",
+      "Agg": "总",
       "Execute": "执行",
       "Index": "索引",
       "Column(s)": "列"
@@ -575,6 +672,97 @@
       "Remove columns with the same name (case-insensitive)": "删除同名列（不区分大小写）。",
       "Remove duplicate rows based on a subset of columns.": "根据列的子集删除重复的行。",
       "Show all duplicates data or duplicate data for a specific value.": "显示所有重复数据或特定值的重复数据。"
+    },
+    "charts": {
+      "Window": "窗口",
+      "Computation": "计算",
+      "Aggregation": "聚合",
+      "Min": "最小值",
+      "Max": "最大值",
+      "Axis Ranges": "轴范围",
+      "Query": "查询",
+      "Load": "加载"
+    },
+    "rangeHighlights": {
+      "Apply To All Columns": "适用于所有列",
+      "Equals": "等于",
+      "Greater Than": "大于",
+      "Less Than": "小于",
+      "Apply": "应用"
+    },
+    "instance":{
+      "Process": "进程",
+      "Rows": "行",
+      "Cols": "列",
+      "Column Names": "列名"
+    },
+    "code_export": {
+      "Code Export": "代码导出",
+      "Copy": "复制"
+    },
+    "upload": {
+      "Load File": "加载文件",
+      "URL": "URL",
+      "Drop data files here to upload, or click to select files": "将数据文件放在这里上传，或点击选择文件。",
+      "Loading File": "加载文件中",
+      "Load From The Web": "从网上加载",
+      "Load": "加载",
+      "Data Type": "数据类型",
+      "Proxy": "代理",
+      "(Optional)": "(可选)",
+      "Sample Datasets": "样本数据集",
+      "(Requires access to web)": "(需要访问网络)"
+    },
+    "about": {
+      "Your version is currently out of sync with PyPi.": "你的版本目前与PyPi不同步。",
+      "Please upgrade.": "请升级。",
+      "Your Version": "您的版本",
+      "PyPi Version": "PyPi版本"
+    },
+    "constants": {
+      "Histogram": "直方图",
+      "Value Counts": "价值计数",
+      "Describe": "描述",
+      "Categories": "类别",
+      "Word Value Counts": "字值计数",
+      "Code Export": "代码导出",
+      "Correlation": "相关性",
+      "Count": "计数",
+      "Covariance": "方差",
+      "Kurtosis": "Kurtosis",
+      "Maximum": "最大值",
+      "Mean": "平均值",
+      "Median": "中位数",
+      "Minimum": "最小值",
+      "Skew": "斜度",
+      "Standard Deviation": "标准偏差",
+      "Sum": "总和",
+      "Variance": "差异",
+      "Unique Count": "独特的计数",
+      "Rolling": "滚动",
+      "Keep First": "保留第一个",
+      "Keep Last": "保留最后一个",
+      "Mean Absolute Deviation": "平均绝对偏差",
+      "Product of All Items": "所有项目的产品"
+    },
+    "filters": {
+      "Ordinal": "序数",
+      "Cleaner": "清洁",
+      "(Choose Col/Agg)": "(选择Col/Agg)",
+      "(Please edit)": "(请编辑)",
+      "Top": "最高"
+    },
+    "describe": {
+      "Data Type": "数据类型",
+      "Column Name": "列名",
+      "Visible": "可见的",
+      "Update Grid": "更新网格"
+    },
+    "variance": {
+      "Unique Values": "独特的值",
+      "Sample Size": "样本量",
+      "Percentage": "百分比",
+      "Percentage Missing": "缺少的百分比"
     }
   }
 }

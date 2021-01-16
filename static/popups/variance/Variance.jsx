@@ -7,6 +7,7 @@ import { RemovableError } from "../../RemovableError";
 import { fetchJson } from "../../fetcher";
 import { renderCodePopupAnchor } from "../CodePopup";
 import VarianceChart from "./VarianceChart";
+import { Trans, withTranslation } from "react-i18next";
 
 class Variance extends React.Component {
   constructor(props) {
@@ -97,21 +98,29 @@ class Variance extends React.Component {
             </li>
             <ul>
               <li>
-                <span className="mr-3">Unique Values:</span>
+                <span className="mr-3">
+                  <Trans t={t}>Unique Values</Trans>:
+                </span>
                 <b>{check1.unique}</b>
               </li>
               <li>
-                <span className="mr-3">Sample Size:</span>
+                <span className="mr-3">
+                  <Trans t={t}>Sample Size</Trans>:
+                </span>
                 <b>{check1.size}</b>
               </li>
               <li>
-                <span className="mr-3">Percentage:</span>
+                <span className="mr-3">
+                  <Trans t={t}>Percentage</Trans>:
+                </span>
                 <b>{check1Pct}%</b>
               </li>
             </ul>
             {this.renderCheck2()}
             <li>
-              <span className="mr-3">Percentage Missing:</span>
+              <span className="mr-3">
+                <Trans t={t}>Percentage Missing</Trans>:
+              </span>
               <b>{_.round(100 * (missingCt / size), 2)}%</b>
             </li>
             <li>
@@ -143,7 +152,7 @@ class Variance extends React.Component {
               right: 25,
               top: 60,
             }}>
-            {renderCodePopupAnchor(code, "Variance")}
+            {renderCodePopupAnchor(code, "Variance", this.props.t)}
           </div>
           <div
             style={{
@@ -169,4 +178,5 @@ Variance.propTypes = {
   }),
 };
 
+Variance = withTranslation("variance")(Variance);
 export { Variance };

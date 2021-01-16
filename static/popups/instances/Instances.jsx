@@ -12,6 +12,7 @@ import { exports as gu } from "../../dtale/gridUtils";
 import { fetchJson } from "../../fetcher";
 import InstancePreview from "./InstancePreview";
 import ProcessLabel from "./ProcessLabel";
+import { withTranslation } from "react-i18next";
 
 require("./Instances.css");
 
@@ -138,6 +139,7 @@ class Instances extends React.Component {
         />
       );
     }
+    const {t} = this.props;
     return (
       <div key="body" className="modal-body">
         <div className="row">
@@ -161,7 +163,7 @@ class Instances extends React.Component {
                   {cleanupCol}
                   <Column
                     dataKey="start"
-                    label="Process"
+                    label={t("Process")}
                     width={200}
                     flexGrow={1}
                     style={{ textAlign: "left", paddingLeft: ".5em" }}
@@ -171,7 +173,7 @@ class Instances extends React.Component {
                   <Column
                     width={50}
                     dataKey="rows"
-                    label="Rows"
+                    label={t("Rows")}
                     style={{
                       textAlign: "right",
                       paddingRight: ".5em",
@@ -182,7 +184,7 @@ class Instances extends React.Component {
                   <Column
                     width={50}
                     dataKey="columns"
-                    label="Cols"
+                    label={t("Cols")}
                     style={{
                       textAlign: "right",
                       paddingRight: ".5em",
@@ -194,7 +196,7 @@ class Instances extends React.Component {
                     width={150}
                     flexGrow={1}
                     dataKey="names"
-                    label="Column Names"
+                    label={t("Column Names")}
                     style={{
                       textAlign: "center",
                       paddingRight: ".5em",
@@ -228,4 +230,4 @@ Instances.propTypes = {
   dataId: PropTypes.string.isRequired,
 };
 
-export default Instances;
+export default withTranslation("instance")(Instances);

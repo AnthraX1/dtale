@@ -4,6 +4,7 @@ import React from "react";
 import Select, { createFilter } from "react-select";
 
 import { PIVOT_AGGS } from "../analysis/filters/Constants";
+import { Trans, withTranslation } from "react-i18next";
 
 function validateAggregateCfg(cfg) {
   const { index, agg } = cfg;
@@ -113,6 +114,7 @@ class Aggregate extends React.Component {
 
   renderAggregation() {
     const agg = _.get(this.state, "agg") || {};
+    const {t} = this.props;
     let input = null;
     if (agg.type === "col") {
       const addAgg = () => {
@@ -140,7 +142,9 @@ class Aggregate extends React.Component {
           <div key={0} className="row pb-4">
             <div className="col-md-5 pr-2">
               <div className="input-group mr-3 col-agg-col-input">
-                <span className="pt-4 mr-4">Col:</span>
+                <span className="pt-4 mr-4">
+                  <Trans t={t}>Col</Trans>:
+                </span>
                 {this.renderSelect(null, "index", false, "_curr_agg_col")}
               </div>
             </div>
@@ -256,6 +260,7 @@ class Aggregate extends React.Component {
   }
 
   render() {
+    const {t} = this.props;
     return [
       <div key={0} className="form-group row">
         <label className="col-md-3 col-form-label text-right">
@@ -275,4 +280,5 @@ Aggregate.propTypes = {
   columns: PropTypes.array,
 };
 
+Aggregate = withTranslation("reshape")(Aggregate);
 export { Aggregate, validateAggregateCfg, buildCode };
