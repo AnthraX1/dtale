@@ -213,7 +213,7 @@ describe("ColumnAnalysis tests", () => {
   });
 
   it("geolocation chart functionality", async () => {
-    result.find("ButtonToggle").find("button").last().simulate("click");
+    result.find("ButtonToggle").find("button").at(2).simulate("click");
     await tickUpdate(result);
     expect(result.find("div#columnAnalysisChart")).toHaveLength(1);
     expect(result.find("GeoFilters")).toHaveLength(1);
