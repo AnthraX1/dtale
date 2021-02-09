@@ -4,7 +4,6 @@ import mock
 import numpy as np
 import pandas as pd
 import pytest
-from contextlib import ExitStack
 
 from dtale.app import build_app
 from dtale.dash_application.charts import (
@@ -18,8 +17,10 @@ from dtale.dash_application.charts import (
 from dtale.dash_application.components import Wordcloud
 from dtale.dash_application.layout.layout import REDS, update_label_for_freq
 from dtale.utils import make_list
+from tests import ExitStack
+from tests.dtale.test_views import URL
 
-URL = "http://localhost:40000"
+
 app = build_app(url=URL)
 
 
@@ -781,6 +782,7 @@ def test_chart_input_updates(unittest):
                 {"id": "animate-toggle", "property": "on"},
                 {"id": "animate-by-dropdown", "property": "value"},
                 {"id": "trendline-dropdown", "property": "value"},
+                {"id": "yaxis-scale", "property": "value"},
             ],
         }
 
@@ -797,6 +799,7 @@ def test_chart_input_updates(unittest):
                 "animate": None,
                 "animate_by": None,
                 "trendline": None,
+                "scale": None,
             },
         )
 
@@ -2313,7 +2316,12 @@ def test_build_axes(unittest):
             axes,
             (
                 {
-                    "yaxis": {"title": "b", "range": [1, 4], "tickformat": ".0f"},
+                    "yaxis": {
+                        "title": "b",
+                        "range": [1, 4],
+                        "tickformat": ".0f",
+                        "type": "linear",
+                    },
                     "yaxis2": {
                         "title": "c",
                         "overlaying": "y",
@@ -2321,6 +2329,7 @@ def test_build_axes(unittest):
                         "anchor": "x",
                         "range": [5, 7],
                         "tickformat": ".0f",
+                        "type": "linear",
                     },
                     "yaxis3": {
                         "title": "d",
@@ -2329,6 +2338,7 @@ def test_build_axes(unittest):
                         "anchor": "free",
                         "position": 0.05,
                         "tickformat": ".0f",
+                        "type": "linear",
                     },
                     "xaxis": {"domain": [0.1, 1], "tickformat": ".0f", "title": "a"},
                 },
@@ -2345,7 +2355,12 @@ def test_build_axes(unittest):
             axes,
             (
                 {
-                    "yaxis": {"title": "b", "range": [1, 4], "tickformat": ".0f"},
+                    "yaxis": {
+                        "title": "b",
+                        "range": [1, 4],
+                        "tickformat": ".0f",
+                        "type": "linear",
+                    },
                     "yaxis2": {
                         "title": "c",
                         "overlaying": "y",
@@ -2353,6 +2368,7 @@ def test_build_axes(unittest):
                         "anchor": "x",
                         "range": [5, 7],
                         "tickformat": ".0f",
+                        "type": "linear",
                     },
                     "yaxis3": {
                         "title": "d",
@@ -2361,6 +2377,7 @@ def test_build_axes(unittest):
                         "anchor": "free",
                         "position": 0.05,
                         "tickformat": ".0f",
+                        "type": "linear",
                     },
                     "yaxis4": {
                         "title": "e",
@@ -2369,6 +2386,7 @@ def test_build_axes(unittest):
                         "anchor": "free",
                         "position": 0.95,
                         "tickformat": ".0f",
+                        "type": "linear",
                     },
                     "xaxis": {
                         "domain": [0.1, 0.8999999999999999],
@@ -2389,7 +2407,12 @@ def test_build_axes(unittest):
             axes,
             (
                 {
-                    "yaxis": {"title": "b", "range": [1, 4], "tickformat": ".0f"},
+                    "yaxis": {
+                        "title": "b",
+                        "range": [1, 4],
+                        "tickformat": ".0f",
+                        "type": "linear",
+                    },
                     "yaxis2": {
                         "title": "c",
                         "overlaying": "y",
@@ -2397,6 +2420,7 @@ def test_build_axes(unittest):
                         "anchor": "x",
                         "range": [5, 7],
                         "tickformat": ".0f",
+                        "type": "linear",
                     },
                     "yaxis3": {
                         "title": "d",
@@ -2405,6 +2429,7 @@ def test_build_axes(unittest):
                         "anchor": "free",
                         "position": 0.05,
                         "tickformat": ".0f",
+                        "type": "linear",
                     },
                     "yaxis4": {
                         "title": "e",
@@ -2413,6 +2438,7 @@ def test_build_axes(unittest):
                         "anchor": "free",
                         "position": 0.95,
                         "tickformat": ".0f",
+                        "type": "linear",
                     },
                     "yaxis5": {
                         "title": "f",
@@ -2421,6 +2447,7 @@ def test_build_axes(unittest):
                         "anchor": "free",
                         "position": 0.1,
                         "tickformat": ".0f",
+                        "type": "linear",
                     },
                     "xaxis": {
                         "domain": [0.15000000000000002, 0.8999999999999999],
@@ -2449,7 +2476,12 @@ def test_build_axes(unittest):
             (
                 {
                     "xaxis": {"title": "a", "tickformat": ".0f"},
-                    "yaxis": {"title": "b", "range": [1, 4], "tickformat": ".0f"},
+                    "yaxis": {
+                        "title": "b",
+                        "range": [1, 4],
+                        "tickformat": ".0f",
+                        "type": "linear",
+                    },
                     "zaxis": {"title": "c", "tickformat": ".0f"},
                 },
                 False,
@@ -2461,7 +2493,12 @@ def test_build_axes(unittest):
             (
                 {
                     "xaxis": {"title": "a", "tickformat": ".0f"},
-                    "yaxis": {"title": "b", "range": [1, 4], "tickformat": ".0f"},
+                    "yaxis": {
+                        "title": "b",
+                        "range": [1, 4],
+                        "tickformat": ".0f",
+                        "type": "linear",
+                    },
                     "zaxis": {"title": "c (Correlation)", "tickformat": ".0f"},
                 },
                 False,
@@ -2477,6 +2514,7 @@ def test_build_axes(unittest):
                         "title": "b (Correlation)",
                         "range": [1, 4],
                         "tickformat": ".0f",
+                        "type": "linear",
                     },
                 },
                 False,
@@ -2489,7 +2527,11 @@ def test_build_axes(unittest):
             (
                 {
                     "xaxis": {"title": "a", "tickformat": ".0f"},
-                    "yaxis": {"tickformat": ".0f", "title": "b (Correlation)"},
+                    "yaxis": {
+                        "tickformat": ".0f",
+                        "title": "b (Correlation)",
+                        "type": "linear",
+                    },
                 },
                 False,
             ),
