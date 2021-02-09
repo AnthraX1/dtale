@@ -28,6 +28,7 @@ from dtale.utils import (
     classify_type,
     get_dtypes,
     is_app_root_defined,
+    coord_type,
     make_list,
 )
 
@@ -204,7 +205,7 @@ CHART_INPUT_SETTINGS = {
 MAP_TYPES = [
     dict(value="choropleth", image=True),
     dict(value="scattergeo", label="ScatterGeo", image=True),
-    dict(value="mapbox"),
+    dict(value="mapbox", label="Detailed", image=True),
 ]
 SCOPES = ["world", "usa", "europe", "asia", "africa", "north america", "south america"]
 PROJECTIONS = [
@@ -231,6 +232,12 @@ PROJECTIONS = [
     "aitoff",
     "sinusoidal",
 ]
+
+AUTO_LOAD_MSG = (
+    "By default, the chart builder will try to build a chart everytime you change your chart settings. If you "
+    "toggle off 'Auto-Load' then you can change the settings as much as you like without triggering a chart build. "
+    "In order to trigger a chart build with 'Auto-Load' off you must click the 'Load' button."
+)
 
 
 def build_img_src(proj, img_type="projections"):
@@ -415,17 +422,34 @@ def show_input_handler(chart_type):
     return _show_input
 
 
-def show_group_input(inputs, group_cols=None):
-    chart_type = inputs.get("chart_type")
-    if show_input_handler(chart_type)("group"):
-        return len(group_cols or make_list(inputs.get("group")))
-    elif show_input_handler(chart_type)("map_group"):
-        return len(group_cols or make_list(inputs.get("map_group")))
-    elif show_input_handler(chart_type)("cs_group"):
-        return len(group_cols or make_list(inputs.get("cs_group")))
-    elif show_input_handler(chart_type)("treemap_group"):
-        return len(group_cols or make_list(inputs.get("treemap_group")))
+def contains_float_col(group_prop, inputs, data_id, group_cols=None):
+    for group_col in group_cols or make_list(inputs.get(group_prop)):
+        if (
+            classify_type(global_state.get_dtype_info(data_id, group_col)["dtype"])
+            == "F"
+        ):
+            return True
     return False
+
+
+def show_group_input(inputs, data_id, group_cols=None):
+    def _flags(group_prop):
+        if len(group_cols or make_list(inputs.get(group_prop))):
+            float_col = contains_float_col(group_prop, inputs, data_id, group_cols)
+            return not float_col, float_col
+        return False, False
+
+    chart_type = inputs.get("chart_type")
+
+    if show_input_handler(chart_type)("group"):
+        return _flags("group")
+    elif show_input_handler(chart_type)("map_group"):
+        return _flags("map_group")
+    elif show_input_handler(chart_type)("cs_group"):
+        return _flags("cs_group")
+    elif show_input_handler(chart_type)("treemap_group"):
+        return _flags("treemap_group")
+    return False, False
 
 
 def update_label_for_freq(val):
@@ -519,7 +543,7 @@ def build_map_options(
 ):
     dtypes = get_dtypes(df)
     cols = sorted(dtypes.keys())
-    float_cols, str_cols, num_cols = [], [], []
+    lat_cols, lon_cols, str_cols, num_cols = [], [], [], []
     for c in cols:
         dtype = dtypes[c]
         classification = classify_type(dtype)
@@ -528,14 +552,17 @@ def build_map_options(
             continue
         if classification in ["F", "I"]:
             num_cols.append(c)
-            if classification == "F":
-                float_cols.append(c)
+            coord = coord_type(df[c])
+            if coord == "lat":
+                lat_cols.append(c)
+            elif coord == "lon":
+                lon_cols.append(c)
 
     lat_options = [
-        build_option(c) for c in float_cols if c not in build_selections(lon, map_val)
+        build_option(c) for c in lat_cols if c not in build_selections(lon, map_val)
     ]
     lon_options = [
-        build_option(c) for c in float_cols if c not in build_selections(lat, map_val)
+        build_option(c) for c in lon_cols if c not in build_selections(lat, map_val)
     ]
     loc_options = [
         build_option(c) for c in str_cols if c not in build_selections(map_val)
@@ -728,7 +755,7 @@ def build_map_type_tabs(map_type):
                         html.Span(t.get("label", t["value"].capitalize())),
                         html.Img(src=build_img_src(t["value"], img_type="map_type")),
                     ],
-                    className="col-md-6",
+                    className="col-md-4",
                 )
 
     return html.Div(
@@ -752,13 +779,13 @@ def build_map_type_tabs(map_type):
     )
 
 
-def build_hoverable(content, hoverable_content):
+def build_hoverable(content, hoverable_content, hover_class="map-types"):
     return html.Div(
         [
             content,
             html.Div(
                 hoverable_content,
-                className="hoverable__content map-types",
+                className="hoverable__content {}".format(hover_class),
                 style=dict(top="50%"),
             ),
         ],
@@ -767,10 +794,15 @@ def build_hoverable(content, hoverable_content):
     )
 
 
-def main_inputs_and_group_val_display(inputs):
-    if show_group_input(inputs):
-        return dict(display="block"), "col-md-8"
-    return dict(display="none"), "col-md-12"
+def main_inputs_and_group_val_display(inputs, data_id):
+    group_vals, bins = show_group_input(inputs, data_id)
+    if group_vals or bins:
+        return (
+            dict(display="block" if group_vals else "none"),
+            dict(display="block" if bins else "none"),
+            "col-md-8",
+        )
+    return dict(display="none"), dict(display="none"), "col-md-12"
 
 
 def build_slider_counts(df, data_id, query_value):
@@ -885,7 +917,9 @@ def charts_layout(df, settings, data_id, **inputs):
     cscale_style = colorscale_input_style(**inputs)
     default_cscale = DEFAULT_CSALES.get(chart_type, REDS)
 
-    group_val_style, main_input_class = main_inputs_and_group_val_display(inputs)
+    group_val_style, bins_style, main_input_class = main_inputs_and_group_val_display(
+        inputs, data_id
+    )
     group_val = [json.dumps(gv) for gv in inputs.get("group_val") or []]
 
     def show_map_style(show):
@@ -944,6 +978,7 @@ def charts_layout(df, settings, data_id, **inputs):
         dcc.Store(id="range-data"),
         dcc.Store(id="yaxis-data", data=inputs.get("yaxis")),
         dcc.Store(id="last-chart-input-data", data=inputs),
+        dcc.Store(id="load-clicks", data=0),
         dcc.Input(id="chart-code", type="hidden"),
         html.Div(
             html.Div(
@@ -1573,7 +1608,7 @@ def charts_layout(df, settings, data_id, **inputs):
                                         colorscale=inputs.get("colorscale")
                                         or default_cscale,
                                     ),
-                                    className="col-auto addon-min-width",
+                                    className="col-auto addon-min-width pr-0",
                                     style=cscale_style,
                                     id="colorscale-input",
                                 ),
@@ -1607,6 +1642,31 @@ def charts_layout(df, settings, data_id, **inputs):
                                     className="ml-auto",
                                     style=lock_zoom_style(chart_type),
                                 ),
+                                build_input(
+                                    build_hoverable(
+                                        html.Div(
+                                            "Auto-Load", style=dict(color="white")
+                                        ),
+                                        AUTO_LOAD_MSG,
+                                        "",
+                                    ),
+                                    html.Div(
+                                        daq.BooleanSwitch(
+                                            id="auto-load-toggle",
+                                            on=True,
+                                            color="green",
+                                        ),
+                                        className="toggle-wrapper",
+                                    ),
+                                    id="auto-load-input",
+                                    className="ml-auto col-auto",
+                                ),
+                                dbc.Button(
+                                    "Load",
+                                    id="load-btn",
+                                    color="primary",
+                                    style=dict(display="none"),
+                                ),
                             ],
                             className="row pt-3 pb-5 charts-filters",
                             id="chart-inputs",
@@ -1627,6 +1687,19 @@ def charts_layout(df, settings, data_id, **inputs):
                     className="col-md-4 pt-3 pb-5",
                     id="group-val-input",
                     style=group_val_style,
+                ),
+                build_input(
+                    "Bins",
+                    daq.NumericInput(
+                        id="bins-val-input",
+                        min=1,
+                        max=30,
+                        value=inputs.get("bins_val") or 5,
+                        style=dict(width="inherit"),
+                    ),
+                    className="col-md-4 pt-3 pb-5",
+                    id="bins-input",
+                    style=bins_style,
                 ),
             ],
             className="row",

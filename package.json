@@ -1,6 +1,6 @@
 {
   "name": "dtale",
-  "version": "1.29.1",
+  "version": "1.31.0",
   "description": "Visualizer for Pandas Data Structures",
   "main": "main.js",
   "directories": {
@@ -135,6 +135,7 @@
     "ntee": "2.0.0",
     "numeral": "2.0.6",
     "oboe": "2.1.5",
+    "plotly.js-dist": "1.58.4",
     "popsicle": "12.1.0",
     "postcss-cli": "8.3.1",
     "prop-types": "15.7.2",
@@ -161,7 +162,8 @@
     "serialize-javascript": "5.0.1",
     "string.prototype.startswith": "1.0.0",
     "styled-components": "5.2.1",
-    "uuid": "8.3.2"
+    "uuid": "8.3.2",
+    "vis-network": "8.5.6"
   },
   "resolutions": {
     "node-notifier": "8.0.1"

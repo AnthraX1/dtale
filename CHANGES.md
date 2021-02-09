@@ -1,5 +1,25 @@
 ## Changelog
 
+### 1.31.0 (2021-1-16)
+* [#387](https://github.com/man-group/dtale/issues/387): calculate skew on date columns converted to millisecond integers
+* [#386](https://github.com/man-group/dtale/issues/386): bugfixes with "Rows w/ numeric" & "Rows w/ hidden"
+* [#389](https://github.com/man-group/dtale/issues/389): added more precision to KDE values
+* update Network Viewer to allow for URL parameter passing of to, from, group & weight
+* [#343](https://github.com/man-group/dtale/issues/343): buttons to load sequential diffs for different sorts
+* [#376](https://github.com/man-group/dtale/issues/376): added bins option to charts for float column groupings
+* [#345](https://github.com/man-group/dtale/issues/345): geolocation analysis
+* [#370](https://github.com/man-group/dtale/issues/370): toggle to turn off auto-loading of charts
+* [#330](https://github.com/man-group/dtale/issues/330): data slope column builder
+* additional documentation
+
+### 1.30.0 (2021-1-3)
+* fixed dependency issues with 27-3 build and pandas 1.2.0 test failures
+* [#379](https://github.com/man-group/dtale/issues/379): issue with skew description
+* [#346](https://github.com/man-group/dtale/issues/346): updated mapbox description
+* [#381](https://github.com/man-group/dtale/issues/381): Network Analysis sub-page
+* [#361](https://github.com/man-group/dtale/issues/361): Network Display
+* fixed styling of Dash modals
+
 ### 1.29.1 (2020-12-24)
 * [#228](https://github.com/man-group/dtale/issues/228): additional documentation on how to run in docker
 * [#344](https://github.com/man-group/dtale/issues/344): Updates to sorting of unique values as well as display of word value count raw values

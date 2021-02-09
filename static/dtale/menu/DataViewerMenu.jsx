@@ -13,6 +13,7 @@ import DuplicatesOption from "./DuplicatesOption";
 import HeatMapOption from "./HeatMapOption";
 import InstancesOption from "./InstancesOption";
 import LowVarianceOption from "./LowVarianceOption";
+import NetworkOption from "./NetworkOption";
 import RangeHighlightOption from "./RangeHighlightOption";
 import { ThemeOption } from "./ThemeOption";
 import UploadOption from "./UploadOption";
@@ -144,6 +145,7 @@ class ReactDataViewerMenu extends React.Component {
               <Trans t={t} ns="menu_description">charts</Trans>
             </div>
           </li>
+          <NetworkOption open={buttonHandlers.NETWORK} />
           <HeatMapOption backgroundMode={backgroundMode} toggleBackground={toggleBackground} />
           <li className="hoverable">
             <span className="toggler-action">
@@ -273,7 +275,7 @@ class ReactDataViewerMenu extends React.Component {
             </div>
           </li>
           <ThemeOption />
-          <li>
+          <li className="hoverable">
             <span className="toggler-action">
               <button className="btn btn-plain" onClick={() => window.location.reload()}>
                 <i className="ico-sync" />
@@ -282,6 +284,7 @@ class ReactDataViewerMenu extends React.Component {
                 </span>
               </button>
             </span>
+            <div className="hoverable__content menu-description">{Descriptions.reload_data}</div>
           </li>
           <ConditionalRender display={iframe}>
             <li>

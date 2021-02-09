@@ -10,6 +10,7 @@ from logging import getLogger
 
 from flask import current_app, json, make_response, redirect, render_template, request
 
+import networkx as nx
 import numpy as np
 import pandas as pd
 import platform
@@ -17,7 +18,6 @@ import requests
 import scipy.stats as sts
 import xarray as xr
 from six import string_types, StringIO
-from string import printable
 
 import dtale.datasets as datasets
 import dtale.env_util as env_util
@@ -25,7 +25,7 @@ import dtale.global_state as global_state
 from dtale import dtale
 from dtale.charts.utils import build_base_chart, build_formatters
 from dtale.cli.clickutils import retrieve_meta_info_and_version
-from dtale.column_builders import clean, clean_code, ColumnBuilder
+from dtale.column_builders import clean, clean_code, ColumnBuilder, printable
 from dtale.column_filters import ColumnFilter
 from dtale.column_replacements import ColumnReplacement
 from dtale.duplicate_checks import DuplicateCheck
@@ -46,6 +46,7 @@ from dtale.utils import (
     apply,
     build_shutdown_url,
     classify_type,
+    coord_type,
     dict_merge,
     divide_chunks,
     export_to_csv_buffer,
@@ -595,6 +596,10 @@ def dtype_formatter(data, dtypes, data_ranges, prev_dtypes=None):
                 val_counts = s.value_counts()
                 check2 = (val_counts.values[0] / val_counts.values[1]) > 20
             dtype_data["lowVariance"] = bool(check1 and check2)
+            dtype_data["coord"] = coord_type(s)
+
+        if classification in ["D"] and not s.isnull().all():
+            dtype_data["skew"] = json_float(apply(s, json_timestamp).skew())
 
         if classification == "S" and not dtype_data["hasMissing"]:
             if dtype.startswith("category"):
@@ -1041,6 +1046,23 @@ def view_popup(popup_type, data_id=None):
 @dtale.route("/calculation/<calc_type>")
 def view_calculation(calc_type="skew"):
     return render_template("dtale/{}.html".format(calc_type))
+
+
+@dtale.route("/network")
+@dtale.route("/network/<data_id>")
+def view_network(data_id=None):
+    """
+    :class:`flask:flask.Flask` route which serves up base jinja template housing JS files
+
+    :param data_id: integer string identifier for a D-Tale process's data
+    :type data_id: str
+    :return: HTML
+    """
+    if data_id is None or data_id not in global_state.get_data().keys():
+        return redirect("/dtale/network/{}".format(head_endpoint()))
+    return base_render_template(
+        "dtale/network.html", data_id, title="Network Viewer", iframe=False
+    )
 
 
 @dtale.route("/code-popup")
@@ -1586,7 +1608,9 @@ def load_describe(column_series, additional_aggs=None):
     return desc, code
 
 
-def build_sequential_diffs(s, col):
+def build_sequential_diffs(s, col, sort=None):
+    if sort is not None:
+        s = s.sort_values(ascending=sort == "ASC")
     diff = s.diff()
     diff = diff[diff == diff]  # remove nan or nat values
     min_diff = diff.min()
@@ -1644,7 +1668,7 @@ def build_string_metrics(s, col):
         char_std=json_float(char_len.std()),
         with_space=int(txt_count(r"\s")),
         with_accent=int(txt_count(r"[À-ÖÙ-öù-ÿĀ-žḀ-ỿ]")),
-        with_num=int(txt_count(r"[0-9]")),
+        with_num=int(txt_count(r"[\d]")),
         with_upper=int(txt_count(r"[A-Z]")),
         with_lower=int(txt_count(r"[a-z]")),
         with_punc=int(
@@ -1684,7 +1708,7 @@ def build_string_metrics(s, col):
         "char_std = char_len.std()",
         "with_space = txt_count(r'\\s')",
         "with_accent = txt_count(r'[À-ÖÙ-öù-ÿĀ-žḀ-ỿ]')",
-        "with_num = txt_count(r'[0-9]')",
+        "with_num = txt_count(r'[\\d]')",
         "with_upper = txt_count(r'[A-Z]')",
         "with_lower = txt_count(r'[a-z]')",
         "with_punc = txt_count(",
@@ -1693,6 +1717,8 @@ def build_string_metrics(s, col):
         "space_at_the_first = txt_count(r'^ ')",
         "space_at_the_end = txt_count(r' $')",
         "multi_space_after_each_other = txt_count(r'\\s{2,}')",
+        "printable = r'\\w \\!\"#\\$%&'\\(\\)\\*\\+,\\-\\./:;<»«؛،ـ\\=>\\?@\\[\\\\\\]\\^_\\`\\{\\|\\}~'",
+        "with_hidden = txt_count(r'[^{}]+'.format(printable))",
         "word_min = word_len.min()",
         "word_max = word_len.max()",
         "word_mean = word_len.mean()",
@@ -2315,7 +2341,7 @@ def get_column_analysis(data_id):
         try:
             kde = sts.gaussian_kde(s)
             kde_data = kde.pdf(hist_labels)
-            kde_data = [json_float(k, precision=8) for k in kde_data]
+            kde_data = [json_float(k, precision=12) for k in kde_data]
             code.append("import scipy.stats as sts\n")
             code.append("kde = sts.gaussian_kde(s['{}'])".format(selected_col))
             code.append("kde_data = kde.pdf(np.linspace(labels.min(), labels.max()))")
@@ -2329,6 +2355,8 @@ def get_column_analysis(data_id):
     ordinal_agg = get_str_arg(request, "ordinalAgg", "sum")
     category_col = get_str_arg(request, "categoryCol")
     category_agg = get_str_arg(request, "categoryAgg", "mean")
+    lat_col = get_str_arg(request, "latCol")
+    lon_col = get_str_arg(request, "lonCol")
     data_type = get_str_arg(request, "type")
     curr_settings = global_state.get_settings(data_id) or {}
     query = build_query(data_id, curr_settings.get("query"))
@@ -2339,11 +2367,10 @@ def get_column_analysis(data_id):
     )
     selected_col = find_selected_column(data, col)
     cols = [selected_col]
-    if ordinal_col is not None:
-        cols.append(ordinal_col)
-    if category_col is not None:
-        cols.append(category_col)
-    data = data[~pd.isnull(data[selected_col])][cols]
+    for col in [ordinal_col, category_col, lat_col, lon_col]:
+        if col is not None:
+            cols.append(col)
+    data = data[~pd.isnull(data[selected_col])][list(set(cols))]
 
     code = build_code_export(
         data_id, imports="import numpy as np\nimport pandas as pd\n\n"
@@ -2352,7 +2379,21 @@ def get_column_analysis(data_id):
     classifier = classify_type(dtype)
     if data_type is None:
         data_type = "histogram" if classifier in ["F", "I"] else "value_counts"
-    if data_type == "word_value_counts":
+    if data_type == "geolocation":
+        lat_col = get_str_arg(request, "latCol")
+        lon_col = get_str_arg(request, "lonCol")
+        geo = data[[lat_col, lon_col]].dropna()
+        geo.columns = ["lat", "lon"]
+        code += [
+            "chart = df[~pd.isnull(df['{}'])][['{}', '{}']".format(
+                selected_col, lat_col, lon_col
+            ),
+            "chart.columns = ['lat', 'lon']",
+        ]
+        col_types = grid_columns(geo)
+        f = grid_formatter(col_types, nan_display=None)
+        return_data = f.format_lists(geo)
+    elif data_type == "word_value_counts":
         s, cleaner_code = handle_cleaners(data[selected_col])
         hist = (
             pd.value_counts(s.str.split(expand=True).stack())
@@ -3148,3 +3189,114 @@ def build_row_text(data_id):
         end = int(end)
         data = data.iloc[(start - 1) : end, :]
     return data[columns].to_csv(index=False, sep="\t", header=False)
+
+
+@dtale.route("/network-data/<data_id>")
+@exception_decorator
+def network_data(data_id):
+    df = global_state.get_data(data_id)
+    to_col = get_str_arg(request, "to")
+    from_col = get_str_arg(request, "from")
+    group = get_str_arg(request, "group", "")
+    weight = get_str_arg(request, "weight")
+
+    nodes = list(df[to_col].unique())
+    nodes += list(df[~df[from_col].isin(nodes)][from_col].unique())
+    nodes = sorted(nodes)
+    nodes = {node: node_id for node_id, node in enumerate(nodes, 1)}
+
+    edge_cols = [to_col, from_col]
+    if weight:
+        edge_cols.append(weight)
+
+    edges = df[[to_col, from_col]].applymap(nodes.get)
+    edges.columns = ["to", "from"]
+    if weight:
+        edges.loc[:, "value"] = df[weight]
+    edges = edges.to_dict(orient="records")
+
+    if group:
+        group = df[[from_col, group]].set_index(from_col)[group].astype("str").to_dict()
+    else:
+        group = {}
+
+    groups = {}
+
+    def build_group(node, node_id):
+        group_val = group.get(node, "N/A")
+        groups[group_val] = node_id
+        return group_val
+
+    nodes = [
+        dict(id=node_id, label=node, group=build_group(node, node_id))
+        for node, node_id in nodes.items()
+    ]
+    return jsonify(dict(nodes=nodes, edges=edges, groups=groups, success=True))
+
+
+@dtale.route("/network-analysis/<data_id>")
+@exception_decorator
+def network_analysis(data_id):
+    df = global_state.get_data(data_id)
+    to_col = get_str_arg(request, "to")
+    from_col = get_str_arg(request, "from")
+    weight = get_str_arg(request, "weight")
+
+    G = nx.Graph()
+    max_edge, min_edge, avg_weight = (None, None, None)
+    if weight:
+        G.add_weighted_edges_from(
+            [tuple(x) for x in df[[to_col, from_col, weight]].values]
+        )
+        sorted_edges = sorted(
+            G.edges(data=True), key=lambda x: x[2]["weight"], reverse=True
+        )
+        max_edge = sorted_edges[0]
+        min_edge = sorted_edges[-1]
+        avg_weight = df[weight].mean()
+    else:
+        G.add_edges_from([tuple(x) for x in df[[to_col, from_col]].values])
+
+    most_connected_node = max(dict(G.degree()).items(), key=lambda x: x[1])
+    return_data = {
+        "node_ct": len(G),
+        "triangle_ct": int(sum(nx.triangles(G).values()) / 3),
+        "most_connected_node": "{} (Connections: {})".format(*most_connected_node),
+        "leaf_ct": sum((1 for edge, degree in dict(G.degree()).items() if degree == 1)),
+        "edge_ct": sum(dict(G.degree()).values()),
+        "max_edge": None
+        if max_edge is None
+        else "{} (source: {}, target: {})".format(
+            max_edge[-1]["weight"], max_edge[0], max_edge[1]
+        ),
+        "min_edge": None
+        if min_edge is None
+        else "{} (source: {}, target: {})".format(
+            min_edge[-1]["weight"], min_edge[0], min_edge[1]
+        ),
+        "avg_weight": json_float(avg_weight),
+    }
+    return jsonify(dict(data=return_data, success=True))
+
+
+@dtale.route("/shortest-path/<data_id>")
+@exception_decorator
+def shortest_path(data_id):
+    df = global_state.get_data(data_id)
+    to_col = get_str_arg(request, "to")
+    from_col = get_str_arg(request, "from")
+    start_val = get_str_arg(request, "start")
+    end_val = get_str_arg(request, "end")
+
+    G = nx.Graph()
+    G.add_edges_from([tuple(x) for x in df[[to_col, from_col]].values])
+    shortest_path = nx.shortest_path(G, source=start_val, target=end_val)
+    return jsonify(dict(data=shortest_path, success=True))
+
+
+@dtale.route("/sorted-sequential-diffs/<data_id>/<column>/<sort>")
+@exception_decorator
+def get_sorted_sequential_diffs(data_id, column, sort):
+    df = global_state.get_data(data_id)
+    metrics, _ = build_sequential_diffs(df[column], column, sort=sort)
+    return jsonify(metrics)

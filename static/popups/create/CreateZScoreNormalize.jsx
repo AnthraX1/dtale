@@ -22,7 +22,7 @@ function buildCode({ col }) {
 class CreateZScoreNormalize extends React.Component {
   constructor(props) {
     super(props);
-    this.state = { group: null, col: null, agg: null };
+    this.state = { col: null };
     this.updateState = this.updateState.bind(this);
   }
 

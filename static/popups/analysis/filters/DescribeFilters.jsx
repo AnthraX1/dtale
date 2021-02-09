@@ -7,6 +7,7 @@ import { exports as gu } from "../../../dtale/gridUtils";
 import { renderCodePopupAnchor } from "../../CodePopup";
 import CategoryInputs from "./CategoryInputs";
 import { ANALYSIS_AGGS, TITLES } from "./Constants";
+import { default as GeoFilters, hasCoords, loadCoordVals } from "./GeoFilters";
 import OrdinalInputs from "./OrdinalInputs";
 import TextEnterFilter from "./TextEnterFilter";
 import { Trans, withTranslation } from "react-i18next";
@@ -28,6 +29,7 @@ function buildState(props) {
     ordinalAgg: _.find(ANALYSIS_AGGS, { value: "sum" }),
     categoryCol: null,
     categoryAgg: _.find(ANALYSIS_AGGS, { value: "mean" }),
+    ...loadCoordVals(props.selectedCol, props.cols),
   };
 }
 
@@ -38,6 +40,7 @@ class DescribeFilters extends React.Component {
     this.buildChart = this.buildChart.bind(this);
     this.buildChartTypeToggle = this.buildChartTypeToggle.bind(this);
     this.buildFilter = this.buildFilter.bind(this);
+    this.buildGeoFilter = this.buildGeoFilter.bind(this);
     this.updateOrdinal = this.updateOrdinal.bind(this);
     this.updateCategory = this.updateCategory.bind(this);
   }
@@ -57,8 +60,8 @@ class DescribeFilters extends React.Component {
   }
 
   buildChartTypeToggle() {
-    const colType = gu.findColType(this.props.dtype);
-    const {t} = this.props;
+    const { dtype, cols, selectedCol, t } = this.props;
+    const colType = gu.findColType(dtype);
     const options = [{ label: t(TITLES.boxplot), value: "boxplot" }];
     if (_.includes(["float", "int"], colType)) {
       options.push({ label: t(TITLES.histogram), value: "histogram" });
@@ -73,6 +76,9 @@ class DescribeFilters extends React.Component {
       options.push({ label: t(TITLES.value_counts), value: "value_counts" });
     } else {
       options.push({ label: t(TITLES.value_counts), value: "value_counts" });
+    }
+    if (hasCoords(selectedCol, cols)) {
+      options.push({ label: TITLES.geolocation, value: "geolocation" });
     }
     const update = value => this.setState({ type: value }, this.buildChart);
     return <ButtonToggle options={options} update={update} defaultValue={this.state.type} />;
@@ -92,6 +98,13 @@ class DescribeFilters extends React.Component {
         }}
       />
     );
+  }
+
+  buildGeoFilter() {
+    const { selectedCol, cols } = this.props;
+    const { latCol, lonCol } = this.state;
+    const update = val => this.setState(val, this.buildChart);
+    return <GeoFilters col={selectedCol} columns={cols} {...{ latCol, lonCol, update }} />;
   }
 
   buildChart() {
@@ -126,6 +139,8 @@ class DescribeFilters extends React.Component {
     let filterMarkup = null;
     if (this.state.type === "boxplot") {
       filterMarkup = null;
+    } else if (this.state.type === "geolocation") {
+      filterMarkup = wrapFilterMarkup(this.buildGeoFilter());
     } else if ("int" === colType) {
       // int -> Value Counts or Histogram
       if (this.state.type === "histogram") {

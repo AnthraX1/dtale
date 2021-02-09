@@ -17,7 +17,6 @@ from sklearn.preprocessing import (
     RobustScaler,
 )
 from sklearn.feature_extraction import FeatureHasher
-from string import printable
 from strsimpy.jaro_winkler import JaroWinkler
 
 import dtale.global_state as global_state
@@ -55,6 +54,8 @@ class ColumnBuilder(object):
             self.builder = CleaningColumnBuilder(name, cfg)
         elif column_type == "diff":
             self.builder = DiffColumnBuilder(name, cfg)
+        elif column_type == "data_slope":
+            self.builder = TimeseriesDataSlopeBuilder(name, cfg)
         else:
             raise NotImplementedError(
                 "'{}' column builder not implemented yet!".format(column_type)
@@ -927,6 +928,9 @@ class EncoderColumnBuilder(object):
         return ""
 
 
+printable = r"\w \!\"#\$%&\'\(\)\*\+,\-\./:;<»«؛،ـ\=>\?@\[\\\]\^_\`\{\|\}~"
+
+
 def clean(s, cleaner, cfg):
     if cleaner == "drop_multispace":
         return s.str.replace(r"[ ]+", " ")
@@ -968,7 +972,7 @@ def clean(s, cleaner, cfg):
                 "You must install the 'nltk' package in order to use this cleaner!"
             )
     elif cleaner == "drop_numbers":
-        return s.str.replace(r"[0-9]+", "")
+        return s.str.replace(r"[\d]+", "")
     elif cleaner == "keep_alpha":
         return apply(s, lambda x: "".join(c for c in x if c.isalpha()))
     elif cleaner == "normalize_accents":
@@ -1055,7 +1059,7 @@ def clean_code(cleaner, cfg):
             "s = s.apply(clean_nltk_stopwords)",
         ]
     elif cleaner == "drop_numbers":
-        return ["""s = s.str.replace(r'[0-9]+', '')"""]
+        return ["""s = s.str.replace(r'[\\d]+', '')"""]
     elif cleaner == "keep_alpha":
         return ["s = s.apply(lambda x: ''.join(c for c in x if c.isalpha()))"]
     elif cleaner == "normalize_accents":
@@ -1103,7 +1107,7 @@ def clean_code(cleaner, cfg):
         return ["s = s.str.replace('_', ' ')"]
     elif cleaner == "hidden_chars":
         return [
-            "from string import printable",
+            "printable = r'\\w \\!\"#\\$%&'\\(\\)\\*\\+,\\-\\./:;<»«؛،ـ\\=>\\?@\\[\\\\\\]\\^_\\`\\{\\|\\}~'",
             "s = s.str.replacer(r'[^{}]+'.format(printable), '')",
         ]
     elif cleaner == "replace_hyphen_w_space":
@@ -1152,3 +1156,27 @@ class DiffColumnBuilder(object):
             col=col,
             periods=periods,
         )
+
+
+class TimeseriesDataSlopeBuilder(object):
+    def __init__(self, name, cfg):
+        self.name = name
+        self.cfg = cfg
+
+    def build_column(self, data):
+        col = self.cfg.get("col")
+        diffs = data[col].diff().bfill()
+        diffs.loc[diffs < 0] = -1
+        g = (~(diffs == diffs.shift(1))).cumsum()
+        return pd.Series(g, index=data.index, name=self.name)
+
+    def build_code(self):
+        col = self.cfg.get("col")
+        return [
+            "diffs = df['{}'].diff().bfill()".format(col),
+            "diffs.loc[diffs < 0] = -1",
+            "g = (~(diffs == diffs.shift(1))).cumsum()",
+            "df.loc[:, '{name}'] = pd.Series(g, index=df.index, name='{name}')".format(
+                name=self.name
+            ),
+        ]

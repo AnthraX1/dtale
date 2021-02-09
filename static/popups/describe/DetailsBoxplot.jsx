@@ -3,36 +3,9 @@ import PropTypes from "prop-types";
 import React from "react";
 
 import chartUtils from "../../chartUtils";
-import { kurtMsg, skewMsg } from "../../dtale/column/ColumnMenuHeader";
+import { DetailsSequentialDiffs } from "./DetailsSequentialDiffs";
+import { buildStat, COUNT_STATS, POSITION_STATS } from "./detailUtils";
 import { Trans, withTranslation } from "react-i18next";
-
-const COUNT_STATS = ["count", "missing_ct", "missing_pct"];
-const POSITION_STATS = ["first", "last", "top"];
-const LABELS = {
-  total_count: "Total Rows",
-  count: "Count (non-nan)",
-  missing_ct: "Count (missing)",
-  missing_pct: "% Missing",
-  freq: "Frequency",
-  kurt: "Kurtosis",
-  skew: "Skew",
-};
-
-function buildStat(key, value, t) {
-  if (value !== undefined) {
-    return (
-      <div>
-        <h4 className="d-inline pr-5">{`${t(_.get(LABELS, key, key))}:`}</h4>
-        <span className="d-inline">
-          {value}
-          {key === "skew" && skewMsg(value)}
-          {key === "kurt" && kurtMsg(value)}
-        </span>
-      </div>
-    );
-  }
-  return null;
-}
 
 class DetailsBoxplot extends React.Component {
   constructor(props) {
@@ -40,6 +13,7 @@ class DetailsBoxplot extends React.Component {
     this.state = { boxplot: null };
     this.createBoxplot = this.createBoxplot.bind(this);
   }
+
   componentDidMount() {
     this.createBoxplot();
   }
@@ -102,7 +76,7 @@ class DetailsBoxplot extends React.Component {
   }
 
   render() {
-    const { details, t } = this.props;
+    const { details, column, t } = this.props;
     const describe = _.get(details, "describe", {});
     const describeKeys = _.keys(
       _.omit(describe, _.concat(["total_count", "freq", "skew", "kurt"], COUNT_STATS, POSITION_STATS))
@@ -158,7 +132,7 @@ class DetailsBoxplot extends React.Component {
                     <li>{buildStat("STD # Chars", details.string_metrics.char_std, t)}</li>
                     <li>{buildStat("Rows w/ Spaces", details.string_metrics.with_space, t)}</li>
                     <li>{buildStat("Rows w/ Accent Chars", details.string_metrics.with_accent, t)}</li>
-                    <li>{buildStat("Rows w/ Numeric Chars", details.string_metrics.with_accent, t)}</li>
+                    <li>{buildStat("Rows w/ Numeric Chars", details.string_metrics.with_num, t)}</li>
                     <li>{buildStat("Rows w/ Uppercase Chars", details.string_metrics.with_upper, t)}</li>
                     <li>{buildStat("Rows w/ Lowercase Chars", details.string_metrics.with_lower, t)}</li>
                     <li>{buildStat("Rows w/ Punctuation", details.string_metrics.with_punc, t)}</li>
@@ -183,20 +157,7 @@ class DetailsBoxplot extends React.Component {
                 </li>
               </React.Fragment>
             )}
-            {details.sequential_diffs && (
-              <li>
-                <div>
-                  <h4 className="d-inline">
-                    <Trans t={t}>Sequential Diffs</Trans>
-                  </h4>
-                </div>
-                <ul>
-                  <li>{buildStat("Min", details.sequential_diffs.min, t)}</li>
-                  <li>{buildStat("Average", details.sequential_diffs.avg, t)}</li>
-                  <li>{buildStat("Max", details.sequential_diffs.max, t)}</li>
-                </ul>
-              </li>
-            )}
+            {details.sequential_diffs && <DetailsSequentialDiffs data={details.sequential_diffs} column={column} />}
             {describe.kurt !== undefined && <li>{buildStat("kurt", describe.kurt, t)}</li>}
             {describe.skew !== undefined && <li>{buildStat("skew", describe.skew, t)}</li>}
             {dtypeCounts}
@@ -214,6 +175,7 @@ class DetailsBoxplot extends React.Component {
 DetailsBoxplot.displayName = "DetailsBoxplot";
 DetailsBoxplot.propTypes = {
   details: PropTypes.object,
+  column: PropTypes.string,
 };
 
 export default withTranslation("details_boxplot")(DetailsBoxplot);

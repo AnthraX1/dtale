@@ -4525,6 +4525,9 @@ button.close {
   position: relative;
   width: auto;
   margin: 10px;
+}
+
+.modal-dialog.react-draggable {
   transition: none !important;
 }
 
@@ -4535,8 +4538,11 @@ button.close {
   display: flex;
   -webkit-box-orient: vertical;
   -webkit-box-direction: normal;
-      -ms-flex-direction: column;
-          flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+}
+
+.react-draggable .modal-content {
   background: transparent;
 }
 
@@ -4598,7 +4604,7 @@ button.close {
 }
 
 .modal-resizable > .modal-body {
-  padding: 1em 1em 4em 1em;
+  padding: 1em 1em 7em 1em;
 }
 
 .modal-footer {
@@ -10163,6 +10169,9 @@ select.form-control:focus,
   border-radius: 0 0 .2em .2em;
   background: #ebedee;
   padding: .5em 1em;
+}
+
+.modal-resizable > .modal-footer {
   position: absolute;
   bottom: 0;
   width: 100%;
@@ -10325,7 +10334,7 @@ li.hoverable:hover {
     left: 13.65em;
 }
 .hoverable__content.map-types {
-    min-width: 13em;
+    min-width: 28em;
     right: unset;
     left: 0;
 }
@@ -10763,6 +10772,13 @@ div.container-fluid.describe > div#popup-content > div.modal-body {
 }
 div.container-fluid.describe div.describe-dtypes-grid-col {
     height: calc(100vh - 112px);
+}
+div.container-fluid.network {
+  height: 100%;
+}
+div.container-fluid.network > #content {
+  height: 100%;
+  padding-top: 0.5em;
 }
 div.modal-dialog div.modal-body.describe-body {
   height: 500px;
